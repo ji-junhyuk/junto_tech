@@ -5,9 +5,9 @@
 	- [재귀 기본 문제](#기본적인-재귀-문제)
 		- [1. 팩토리얼](#1-팩토리얼factorial)
 		- [2. 피보나치](#2-피보나치fibonacci)
-		- [3. 하노이의 탑](#3-하노이의-탑hanois-tower)
+		- [3. 최대공약수](#3-최대공약수gcd-greatest-common-divisor)
 		- [4. 이진탐색](#4-이진탐색binary-search)
-		- [5. 최대공약수](#5-최대공약수gcd,-Greatest-Common-Divisor)
+		- [5. 하노이의 탑](#5-하노이의-탑hanois-tower)		
 - [참고자료](#참고자료)
 ------
 
