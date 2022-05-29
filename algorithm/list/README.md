@@ -38,7 +38,7 @@
 	- 데이터가 메모리 상에 연속되어 있지 않아 `cache hit rate가 낮다`(성능에 불리).
 ### :balloon: 임의의 위치에 원소를 추가하거나 제거하는 연산을 많이 하는 경우 연결리스트의 사용을 고려해보자.
 
-![list](https://user-images.githubusercontent.com/67992469/170828409-aa2169ca-a4c3-45da-bbf4-5481ff955fe9.png)
+![list](https://user-images.githubusercontent.com/67992469/170850870-637960db-63b3-4e31-ab97-f8a5195c3f38.png)
 - 추상적 자료형(ADT, Abstract Data Type)
 ```
 추상적 자료형, 컴퓨터 과학에서 자료들과 그 자료들에 대한 연산들을 명기한 것이라고 한다. (나무위키)
