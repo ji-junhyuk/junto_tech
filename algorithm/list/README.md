@@ -5,8 +5,8 @@
 	- [연결리스트의 장단점](#연결리스트의-장단점)
 	- [배열 기반 리스트의 구현](#배열-기반-리스트의-구현)
 	- [단일 연결 리스트(Singly Linked List)의 구현](#단일-연결-리스트singly-linked-list의-구현)
-	- [원형 연결 리스트(Circular Linked List)의 구현](#원형-연길-리스트의-구현circular-linked-list의-구현)
 	- [이중 연결 리스트(Doubly Linked List)의 구현](#이중-연결-리스트doubly-linked-list의-구현)
+	- [원형 연결 리스트(Circular Linked List)의 구현](#원형-연길-리스트의-구현circular-linked-list의-구현)
 - [참고자료](#참고자료)
 ------
 
@@ -290,48 +290,82 @@ typedef struct _node
 	struct _node *prev;
 } Node;
 
-typedef struct _DLinkedList
+typedef struct _dbDLinkedList
 {
 	Node *head;
+	Node *tail;
 	Node *cur;
-	int num_data;
-} DBLinkedList;
+	int numOfData;
+} DBDLinkedList
 ```
 
 ```c
 void ListInit(List *plist)
 {
-	plist->head = NULL;
-	plist->num_data = 0;
+	plist->head = (Node*)malloc(sizeof(Node));
+	plist->tail = (Node*)malloc(sizeof(Node));
+
+	plist->head->prev = NULL;
+	plist->head->next = plist->tail;
+
+	plist->tail->next = NULL;
+	plist->tail->prev = plist->head;
+
+	plist->numOfData = 0;
 }
-// 조회에 사용되는 cur은 LFirst함수가 호출됨과 동시에 초기화
 
 void LInsert(List *plist, Data data)
 {
+	Node * newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = data;
+
+	newNode->prev = plist->tail->prev;
+	plist->tail->prev->next = newNode;
+
+	newNode->next = plist->tail;
+	plist->tail->prev = newNode;
+
+	(plist->numOfData)++;
+}
 
 int LFirst(List *plist, Data *pdata)
 {
-	if (plist->head == NULL)
-		return false;
+	if (plist->head->next == plist->tail)
+		return FALSE;
 
-	plist->cur = plist->head;
+	plist->cur = plist->head->next;
 	*pdata = plist->cur->data;
 	return TRUE;
 }
 
-int LNext(List *plist, Data *pdata)
+int LNext(List * plist, Data * pdata)
 {
-	if (plist->cur->next == NULL)
+	if (plist->cur->next == plist->tail)
 		return FALSE;
-	
 	plist->cur = plist->cur->next;
 	*pdata = plist->cur->data;
 	return TRUE;
 }
 
+Data LRemove(List * plist)
+{
+	Node * rpos = plist->cur;
+	Data remv = rpos->data;
+
+	plist->cur->prev->next = plist->cur->next;
+	plist->cur->next->prev = plist->cur->prev;
+
+	plist->cur = plist->cur->prev;
+
+	free(rpos);
+	(plist->numOfData)--;
+	return remv;
+}
+
+
 int LPrevious(List *plist, Data *pdata)
 {
-	if (plist->cur->prev == NULL)
+	if (plist->cur->prev == plist->head)
 		return FALSE;
 
 	plist->cur = plist->cur->prev;
@@ -372,7 +406,7 @@ void LInsertFront(List * plist, Data data)
 	Node *newNode = (Node*)malloc(sizeof(Node));
 	newNode->data = data;
 
-	if(plist->tail == NULL) 
+	if (plist->tail == NULL) 
 	{
 		plist->tail = newNode;
 		newNode->next = newNode;
@@ -382,7 +416,6 @@ void LInsertFront(List * plist, Data data)
 		newNode->next = plist->tail->next;
 		plist->tail->next = newNode;
 	}
-
 	(plist->num_data)++;
 }
 
@@ -391,7 +424,7 @@ void LInsert(List * plist, Data data)
 	Node * newNode = (Node*)malloc(sizeof(Node));
 	newNode->data = data;
 
-	if(plist->tail == NULL) 
+	if (plist->tail == NULL) 
 	{
 		plist->tail = newNode;
 		newNode->next = newNode;
@@ -407,7 +440,7 @@ void LInsert(List * plist, Data data)
 
 int LFirst(List * plist, Data * pdata)
 {
-	if(plist->tail == NULL)
+	if (plist->tail == NULL)
 		return FALSE;
 
 	plist->before = plist->tail;
@@ -419,7 +452,7 @@ int LFirst(List * plist, Data * pdata)
 
 int LNext(List * plist, Data * pdata)
 {
-	if(plist->tail == NULL)
+	if (plist->tail == NULL)
 		return FALSE;
 
 	plist->before = plist->cur;
@@ -458,91 +491,6 @@ Data LRemove(List * plist)
 int LCount(List * plist)
 {
 	return plist->num_data;
-}
-```
-
-### 이중 연결 리스트(Doubly Linked List)의 구현
-```c
-void ListInit(List * plist)
-{
-	plist->head = (Node*)malloc(sizeof(Node));
-	plist->tail = (Node*)malloc(sizeof(Node));
-
-	plist->head->prev = NULL;
-	plist->head->next = plist->tail;
-
-	plist->tail->next = NULL;
-	plist->tail->prev = plist->head;
-
-	plist->numOfData = 0;
-}
-
-void LInsert(List * plist, Data data) 
-{
-	// 새 노드를 꼬리에 추가하는 방식
-	Node * newNode = (Node*)malloc(sizeof(Node));
-	newNode->data = data;
-
-	newNode->prev = plist->tail->prev;
-	plist->tail->prev->next = newNode;
-
-	newNode->next = plist->tail;
-	plist->tail->prev = newNode;
-
-	(plist->numOfData)++;
-/*	
-	// 더미 노드 없고, 머리에 새 노드를 추가하는 방식.
-	Node *newNode = (Node*)malloc(sizeof(Node));
-	newNode->data = data;
-
-	newNode->next = plist->head; // 새 노드의 next를 NULL로 초기화
-	if (plist->head != NULL)
-		plist->head->prev = newNode;
-	newNode->prev = NULL;
-	plist->head = newNode;
-
-	(plist->num_data)++;
-*/
-}
-
-int LFirst(List * plist, Data * pdata)
-{
-	if(plist->head->next == plist->tail)
-		return FALSE;
-
-	plist->cur = plist->head->next;
-	*pdata = plist->cur->data;
-	return TRUE;
-}
-
-int LNext(List * plist, Data * pdata)
-{
-	if(plist->cur->next == plist->tail)
-		return FALSE;
-
-	plist->cur = plist->cur->next;
-	*pdata = plist->cur->data;
-	return TRUE;
-}
-
-Data LRemove(List * plist)
-{
-	Node * rpos = plist->cur;
-	Data rdata = rpos->data;
-
-	plist->cur->prev->next = plist->cur->next;
-	plist->cur->next->prev = plist->cur->prev;
-
-	plist->cur = plist->cur->prev;
-
-	free(rpos);
-	(plist->numOfData)--;
-	return rdata;
-}
-
-int LCount(List * plist)
-{
-	return plist->numOfData;
 }
 ```
 
