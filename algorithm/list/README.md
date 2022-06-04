@@ -8,6 +8,15 @@
 	- [이중 연결 리스트(Doubly Linked List)의 구현](#이중-연결-리스트doubly-linked-list의-구현)
 	- [원형 연결 리스트(Circular Linked List)의 구현](#원형-연길-리스트의-구현circular-linked-list의-구현)
 - [C++ containers의 list](#c-stl-list)
+	- [생성자, constructor](#생성자constructor)
+	- [연산자, operator](#연산자operator)
+	- [반복자, iterator](#반복자iterator)
+	- [크기](#크기)
+	- [요소 접근](#요소-접근)
+	- [수정자](#수정자)
+	- [기능](#기능)
+	- [관찰자](#관찰자)
+	- [비 멤버함수 오버로드](#비-멤버함수-오버로드])
 - [관련 문제](#관련-문제)
 - [참고자료](#참고자료)
 ------
@@ -495,15 +504,130 @@ int LCount(List * plist)
 	return plist->num_data;
 }
 ```
+
 ## C++ STL list
-- 
+- `비연속적인 메모리 할당을 허용`하는 `시퀀스 컨테이너`이다.
+- `이중 연결 리스트(Doubly Linked List)`으로 구현된다.
+= 각 요소는 다음 및 이전 요소에 접근할 수 있는 정보를 가지고 있기에 특정 요소에 대한 `삽입, 삭제가 가능`하다. 하지만, `직접 임의 접근은 허용되지 않는다`.
+- `벡터에 비해 목록 순회는 느리지만` `위치를 찾으면 삽입 및 삭제가 빠르다`.
+- 단일 연결 리스트(Singly Linked List)는 std::forword_list에 정의되어 있다.	
+
+### 멤버함수
+#### 생성자(constructor)
+```c++
+int main(void)
+{
+	std::list<int> first; // 비어있는 int형 list선언.
+	std::list<int> second(10, 100); // 100의 값을 가지는 10개의 int형 list선언.
+	std::list<int> third(second.begin(). second.end()); // second와 동일.
+	std::list<int> fourth(third) // third와 동일.
+	int arr[] = {1, 2, 3, 4};
+	std::list<int> fifth(arr, arr + sizeof(arr) / sizeof(int));
+	
+	for (std::list<int>::iterator it = fifth.begin(); it != fifth.end(); it++)
+	std::cout << *it << ' ';
+	// 1 2 3 4 출력
+```
+#### 소멸자(destructor)
+	- list container가 할당한 모든 저장 용량을 할당 해제한다.
+#### 연산자(operator) =
+	- 컨테이너에 새 내용을 할당하여 현재 내용을 바꾸고 그에 따라 크기를 수정한다.
+```c
+int main ()
+{
+	std::list<int> first (3);      // 0으로 초기화된 3개의 int형을 갖는 list
+	std::list<int> second (5);     // 0으로 초기화된 5개의 int형을 갖는 list
+	second = first;
+	first = std::list<int>();
+
+	std::cout << int (first.size()) << '\n';
+	std::cout << int (second.size()) << '\n';
+	// first 0, second 3 출력.
+	return 0;
+}
+```
+
+#### 반복자 
+- begin : 반복자를 처음으로 반환한다.
+- end : 반복자를 끝으로 반환한다.
+```c++
+for (std::list<int>::iterator it=mylist.begin(); it != mylist.end(); ++it)
+	std::cout << ' ' << *it;
+```
+- rbegin : 반복자를 뒤집어 끝으로 반환한다.(뒤에서부터 순차적 접근)
+- rend : 반복자를 뒤집어 시작으로 반환한다.
+```c++
+for (std::list<int>::reverse_iterator rit=mylist.rbegin(); rit!=mylist.rend(); ++rit)
+    std::cout << ' ' << *rit;
+```
+
+#### 크기
+- empty : 컨테이너가 비어 있는지 테스트한다.
+- size : 사이즈를 반환한다.
+- max_size : 최대 사이즈를 반환한다.
+
+#### 요소 접근
+- front : 처음 원소에 접근한다.
+- back : 마지막 원소에 접근한다.
+
+#### 수정자
+- assign : 컨테이너에 새로운 내용을 할당한다.
+```c++
+int main ()
+{
+  std::list<int> first;
+  std::list<int> second;
+
+  first.assign (7,100);				// 100의 값을 가진 7개의 int형을 가진 list 
+  int arr[]= {1, 2, 3};
+  second.assign (arr, arr + 3);	// 배열 할당하기
+  std::cout << int (first.size()) << '\n';
+  std::cout << int (second.size()) << '\n';
+  // 7 3 출력
+  return 0;
+}
+```
+- emplace_front : 시작 부분에 요소 생성 및 삽입한다.
+- push_front : 시작 부분에 요소를 추가한다.
+- pop_front : 처음 원소를 삭제한다.
+- emplace_back : 끝에 요소 생성 및 삽입한다.
+- push_back : 끝에 요소를 추가한다.
+- pop_back : 마지막 원소를 삭제한다.
+- emplace : 요소를 생성 및 삽입한다.
+- insert : 요소를 삽입한다.
+- erase : 요소를 삭제한다.
+- swap : 바꾸다.
+- resize : 사이즈를 변경한다.
+- clear : 리스트를 비운다.
+
+#### 기능
+- splice : list에서 list로 목록 전송한다.
+- remove : 특정 값을 가진 요소 제거한다.
+- remove_if : 조건을 충족하는 요소를 제거한다.
+- unique : 중복 값 제거한다.
+- merge : 정렬된 list로 합친다.
+- sort : 컨테이너의 요소를 정렬한다.
+- reverse : 요소의 순서를 반대로 한다.
+
+#### 관찰자
+- get_allocator : 할당자를 얻어온다.
+
+#### 비 멤버함수 오버로드
+- relational operators(list) : list에 대한 관계연산자.
+- swap(list) : 두 리스트의 내용을 교환한다.
+
 ## 관련 문제
 |     | 문제 | 제목   | 풀이                                                                       |
 |-----|------|--------|----------------------------------------------------------------------------|
 | BOJ | 5397 | 키로거 | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
-
+```
 
 ## 참고자료
 - 윤성우의 열혈 자료구조
 - [바킹독 알고리즘](https://blog.encrypted.gg/932?category=773649)
 - https://choiiis.github.io/data-structure/basics-of-array-and-list/
+- https://www.cplusplus.com/reference/list/list
+- https://en.cppreference.com/w/cpp/container/list
+- https://www.geeksforgeeks.org/push_back-vs-emplace_back-in-cpp-stl-vectors/
+- http://candcplusplus.com/c-difference-between-emplace_back-and-push_back-function
+- https://sonagi87174.tistory.com/14
