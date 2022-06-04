@@ -9,14 +9,15 @@
 	- [원형 연결 리스트(Circular Linked List)의 구현](#원형-연길-리스트의-구현circular-linked-list의-구현)
 - [C++ containers의 list](#c-stl-list)
 	- [생성자, constructor](#생성자constructor)
-	- [연산자, operator](#연산자operator)
-	- [반복자, iterator](#반복자iterator)
+	- [소멸자, destructor](#소멸자destructor)
+	- [연산자, operator =](#연산자operator-)
+	- [반복자, iterator](#반복자iterators)
 	- [크기](#크기)
 	- [요소 접근](#요소-접근)
 	- [수정자](#수정자)
 	- [기능](#기능)
 	- [관찰자](#관찰자)
-	- [비 멤버함수 오버로드](#비-멤버함수-오버로드])
+	- [비 멤버함수 오버로드](#비-멤버함수-오버로드)
 - [관련 문제](#관련-문제)
 - [참고자료](#참고자료)
 ------
@@ -547,7 +548,7 @@ int main ()
 }
 ```
 
-#### 반복자 
+#### 반복자(iterators)
 - begin : 반복자를 처음으로 반환한다.
 - end : 반복자를 끝으로 반환한다.
 ```c++
@@ -620,7 +621,6 @@ int main ()
 |     | 문제 | 제목   | 풀이                                                                       |
 |-----|------|--------|----------------------------------------------------------------------------|
 | BOJ | 5397 | 키로거 | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
-```
 
 ## 참고자료
 - 윤성우의 열혈 자료구조
