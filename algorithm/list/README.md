@@ -18,6 +18,10 @@
 	- [기능\(splice, remove, remove_if, unique, merge, sort, reverse\)](#기능)
 	- [관찰자\(get_allotcator\)](#관찰자)
 	- [비 멤버함수 오버로드\(관계연산자, swap\(list\)\)](#비-멤버함수-오버로드)
+- [생각해보기]
+	- [원형 연결 리스트 내 임의의 노드 하나가 주어졌을 때, 해당 List의 길이를 효과적으로 구하는 방법은?]
+	- [중간에 만나는 두 연결리스트의 시작점이 주어졌을 때, 만나는 지점을 구하는 방법은?]
+	- [주어진 연결리스트 안에서 사이클이 있는지 판단하는 방법은?]
 - [관련 문제](#관련-문제)
 - [참고자료](#참고자료)
 ------
@@ -619,19 +623,17 @@ int main ()
 - relational operators(list) : list에 대한 관계연산자.
 - swap(list) : 두 리스트의 내용을 교환한다.
 
+## 생각해보기
 ## 관련 문제
-<<<<<<< HEAD
-|     | 문제 | 제목        | 풀이                                                                       |
-|-----|------|-------------|----------------------------------------------------------------------------|
-| BOJ | 5397 | 키로거      | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
-| BOJ | 1158 | 요세푸스    | [코드]()                                                                   |
-| BOJ | 1021 | 회전하는 큐 | [코드]()                                                                   |
-```
-=======
-|     | 문제 | 제목   | 풀이                                                                       |
-|-----|------|--------|----------------------------------------------------------------------------|
-| BOJ | 5397 | 키로거 | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
->>>>>>> c3db1afb6d4ccb2f740fdd9204eb4d4e0f1bef00
+|     | 문제 | 제목              | 풀이                                                                       |
+|-----|------|-------------------|----------------------------------------------------------------------------|
+| BOJ | 5397 | 키로거            | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
+| BOJ | 1158 | 요세푸스          | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/1158.md) |
+| BOJ | 1021 | 회전하는 큐       | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/1021.md) |
+| BOJ | 1406 | 에디터            | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/1406.md) |
+| BOJ | 2346 | 풍선 터뜨리기(s3) | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/2346.md) |
+| BOJ | 2840 | 행운의 바퀴(s4)   | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/2840.md) |
+| BOJ | 3190 | 뱀(G4)            | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/3190.md) |
 
 ## 참고자료
 - 윤성우의 열혈 자료구조
