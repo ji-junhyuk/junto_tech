@@ -9,14 +9,15 @@
 	- [원형 연결 리스트(Circular Linked List)의 구현](#원형-연길-리스트의-구현circular-linked-list의-구현)
 - [C++ containers의 list](#c-stl-list)
 	- [생성자, constructor](#생성자constructor)
-	- [연산자, operator](#연산자operator)
-	- [반복자, iterator](#반복자iterator)
-	- [크기](#크기)
-	- [요소 접근](#요소-접근)
-	- [수정자](#수정자)
-	- [기능](#기능)
-	- [관찰자](#관찰자)
-	- [비 멤버함수 오버로드](#비-멤버함수-오버로드])
+	- [소멸자, destructor](#소멸자destructor)
+	- [연산자, operator \(=\)](#연산자operator-)
+	- [반복자, iterator \(begin, end, rbegin, rend\)](#반복자iterators)
+	- [크기\(empty, size, max_size\)](#크기)
+	- [요소 접근\(front, back\)](#요소-접근)
+	- [수정자\(assign, emplace_front, push_front, emplace_back, push_back, pop_back, emplace, insert, erase, swap, resize, clear\)](#수정자)
+	- [기능\(splice, remove, remove_if, unique, merge, sort, reverse\)](#기능)
+	- [관찰자\(get_allotcator\)](#관찰자)
+	- [비 멤버함수 오버로드\(관계연산자, swap\(list\)\)](#비-멤버함수-오버로드)
 - [관련 문제](#관련-문제)
 - [참고자료](#참고자료)
 ------
@@ -508,7 +509,8 @@ int LCount(List * plist)
 ## C++ STL list
 - `비연속적인 메모리 할당을 허용`하는 `시퀀스 컨테이너`이다.
 - `이중 연결 리스트(Doubly Linked List)`으로 구현된다.
-= 각 요소는 다음 및 이전 요소에 접근할 수 있는 정보를 가지고 있기에 특정 요소에 대한 `삽입, 삭제가 가능`하다. 하지만, `직접 임의 접근은 허용되지 않는다`.
+- 각 요소는 다음 및 이전 요소에 접근할 수 있는 정보를 가지고 있기에 특정 요소에 대한 `삽입, 삭제가 가능`하다. 
+하지만, `직접 임의 접근은 허용되지 않는다`.
 - `벡터에 비해 목록 순회는 느리지만` `위치를 찾으면 삽입 및 삭제가 빠르다`.
 - 단일 연결 리스트(Singly Linked List)는 std::forword_list에 정의되어 있다.	
 
@@ -547,7 +549,7 @@ int main ()
 }
 ```
 
-#### 반복자 
+#### 반복자(iterators)
 - begin : 반복자를 처음으로 반환한다.
 - end : 반복자를 끝으로 반환한다.
 ```c++
@@ -618,12 +620,18 @@ int main ()
 - swap(list) : 두 리스트의 내용을 교환한다.
 
 ## 관련 문제
+<<<<<<< HEAD
 |     | 문제 | 제목        | 풀이                                                                       |
 |-----|------|-------------|----------------------------------------------------------------------------|
 | BOJ | 5397 | 키로거      | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
 | BOJ | 1158 | 요세푸스    | [코드]()                                                                   |
 | BOJ | 1021 | 회전하는 큐 | [코드]()                                                                   |
 ```
+=======
+|     | 문제 | 제목   | 풀이                                                                       |
+|-----|------|--------|----------------------------------------------------------------------------|
+| BOJ | 5397 | 키로거 | [코드](https://github.com/ji-junhyuk/junto_tech/blob/main/ps/list/5397.md) |
+>>>>>>> c3db1afb6d4ccb2f740fdd9204eb4d4e0f1bef00
 
 ## 참고자료
 - 윤성우의 열혈 자료구조
