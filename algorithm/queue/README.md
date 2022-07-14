@@ -173,6 +173,56 @@ Data Deque(Queue *pq)
 }
 ```
 
+### 덱의 성질
+1. 원소의 추가가 O(1)
+2. 원소의 제거가 O(1)
+3. 제일 앞/뒤의 원소 확인이 O(1)
+4. 제일 앞/뒤가 아닌 나머지 원소들 확인/변경이 원칙적으로 불가능
+
+### 덱의 배열 구현
+```c
+const int MX = 1000005;
+int dat[2*MX+1];
+int head = MX, tail = MX;
+//dat을 양쪽으로 확장하기 위해 시작지점을 0번지가 아닌 배열의 중간지점으로 둔다.
+```
+
+```c
+void push_front(int x)
+{
+	dat[--head] = x;
+}
+
+void push_back(int x)
+{
+	dat[tail++] = x;
+}
+
+void pop_front(int x)
+{
+	++head;
+}
+
+void pop_back(int x)
+{
+	--tail;
+}
+
+int front()
+{
+	return dat[head];
+}
+
+int back()
+{	
+	return dat[tail - 1];
+}
+```
+### 덱 STL
+- STL vector에서 제공되는 기능을 STL deque에서도 다 제공한다.
+- vector와 달리 deque은 모든 원소들이 `메모리 상에 연속하게 배치되어 있지 않다`.
+-  앞쪽과 뒷쪽에서의 추가와 제거가 모두 필요하면 당연히 STL deque을 사용하는게 효율적이다.
+
 ### 덱 자료구조의 ADT
 - 덱은 앞, 뒤로 넣고 뺄 수 있는 자료구조를 말한다.
 ```c++
@@ -324,6 +374,10 @@ Data DQGetLast(Deque *pdeq)
 }
 ```
 ### C++ STL queue
-### C++ STL deque
 ### 관련 문제
+|     | 문제  | 제목                                | 풀이     |
+|-----|-------|-------------------------------------|----------|
+| BOJ | 10845 | 큐(s4)                              | [코드]() |
+| BOJ | 18258 | 큐2(s4)                             | [코드]() |
+| BOJ | 2164  | 카드2(s4)                           | [코드]() |
 ### 참고자료
