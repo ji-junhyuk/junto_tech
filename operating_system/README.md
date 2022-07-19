@@ -9,7 +9,48 @@
 
 ### 부트스트랩(bootstrap)
 - 컴퓨터 시스템이 시작될 때 `운영 체제(OS)를 초기화`하는 프로그램이다.
+
+---
+
+### 프로세스
+- 실행 중인 프로그램을 말한다. 즉, 디스크에서 메모리에 올라온 것을 말한다.
+![사진3](https://user-images.githubusercontent.com/67992469/179715276-ee7826c7-f81f-43d4-85b7-c8147f2b2f2a.png)
+- Text section (executable code)
+- Data section (global variable)
+- Heap section (memory that is dynamically alllocated during program run time)
+- Stack section (temporary data storage when invoking function)
+- 프로세스는 명령을 달성하기 위해 확실한 자원이 필요하다.
+	1. CPU TIME
+	2. Memory
+	3. files
+	4. I/O device
  
+#### 프로세스 상태
+![4](https://user-images.githubusercontent.com/67992469/179715334-f2fc4284-d106-4e07-95ba-b6c150f85f83.png)
+- New: 프로세스가 막 생성되었을 때.
+- Ready: 프로세스가 프로세서에게 할당 되길 기다릴 때
+- Running: 프로세스가 할당되어 실행될 때.
+- Waiting: 프로세스가 이벤트를 기다릴 때.
+- Terminated: 프로세스의 실행을 끝냈을 때.
+
+#### PCB(Process Control Block, TCB)
+- 프로세스가 가진 모든 정보를 저장하는 구조체를 말한다. 이는 운영체제가 관리한다.
+	- `Process state` : 프로세스 상태
+	- `Program counter` : 해당 프로세스가 이어서 실행할 명령의 주소
+	- CPU registers : 프로세스가 인터럽트 이후 참조하는 register 값
+	- CPU-scheduling : 프로세스의 중요도
+	- Memory-management information : 메모리 관리 정보
+	- Account information : 사용된 CPU 총량, 프로세스 개수 등
+	- I/O status information : 프로세스에 할당된 입출력 장치 목록
+
+#### Scheduling Queue
+- 프로세스가 시스템에 들어오면, `준비 큐(ready queue)`에 들어간다.  
+- 일반적으로 링크드리스트로 규현된다.
+
+#### Context Switch
+- 프로세서에 할당된 프로세스를 바꾸는 것을 말한다.
+- 인터럽트가 발생하면 현재 실행하고 있는 프로세스 내용을 시스템에 저장한다. 새로운 프로세스를 필요하며 나중에 필요할 때 전에 내용을 복원할 수 있다.
+
 ---
 
 ### 시스템 콜(system call)
@@ -88,47 +129,6 @@
 - 여러 작업들을 동시에 메모리에 올리는 것이다.
 - 하나의 cpu를 가지고 자주 switch하는 방식으로 사용자의 눈에는 마치 동시에 작동하는 것으로 보인다. (시분할, 동시성)
 cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있을 때 시스템은 어떤 프로세스를 다음에 실행시켜야 효율적일까?
-
----
-
-### 프로세스
-- 실행 중인 프로그램을 말한다. 즉, 디스크에서 메모리에 올라온 것을 말한다.
-![사진3](https://user-images.githubusercontent.com/67992469/179715199-0ea771a4-4fdf-46e6-9ee2-a03b5b881238.png)
-- Text section (executable code)
-- Data section (global variable)
-- Heap section (memory that is dynamically alllocated during program run time)
-- Stack section (temporary data storage when invoking function)
-- 프로세스는 명령을 달성하기 위해 확실한 자원이 필요하다.
-	1. CPU TIME
-	2. Memory
-	3. files
-	4. I/O device
- 
-#### 프로세스 상태
-![4](https://user-images.githubusercontent.com/67992469/179715334-f2fc4284-d106-4e07-95ba-b6c150f85f83.png)
-- New: 프로세스가 막 생성되었을 때.
-- Ready: 프로세스가 프로세서에게 할당 되길 기다릴 때
-- Running: 프로세스가 할당되어 실행될 때.
-- Waiting: 프로세스가 이벤트를 기다릴 때.
-- Terminated: 프로세스의 실행을 끝냈을 때.
-
-#### PCB(Process Control Block, TCB)
-- 프로세스가 가진 모든 정보를 저장하는 구조체를 말한다. 이는 운영체제가 관리한다.
-	- `Process state` : 프로세스 상태
-	- `Program counter` : 해당 프로세스가 이어서 실행할 명령의 주소
-	- CPU registers : 프로세스가 인터럽트 이후 참조하는 register 값
-	- CPU-scheduling : 프로세스의 중요도
-	- Memory-management information : 메모리 관리 정보
-	- Account information : 사용된 CPU 총량, 프로세스 개수 등
-	- I/O status information : 프로세스에 할당된 입출력 장치 목록
-
-#### Scheduling Queue
-- 프로세스가 시스템에 들어오면, `준비 큐(ready queue)`에 들어간다.  
-- 일반적으로 링크드리스트로 규현된다.
-
-#### Context Switch
-- 프로세서에 할당된 프로세스를 바꾸는 것을 말한다.
-- 인터럽트가 발생하면 현재 실행하고 있는 프로세스 내용을 시스템에 저장한다. 새로운 프로세스를 필요하며 나중에 필요할 때 전에 내용을 복원할 수 있다.
 
 ---
 
