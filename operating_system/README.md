@@ -77,8 +77,9 @@
 #### 멀티코어(Multi core dsign)
 - 여러개의 코어가 같은 칩에 있다.
 - 칩 내부의 통신(On-chip communication)이 칩 사이의 통신(Between-chip communication)보다 더 빠르기 때문에 여러 개의 칩에 하나의 코어만 두는 시스템보다 더 효율적
-[사진](https://github.com/ji-junhyuk/junto_tech/issues/4)
- 
+
+![사진](https://user-images.githubusercontent.com/67992469/179715133-18527b4a-3e11-4491-b278-1352bc865d0a.png)
+
 #### 멀티프로그래밍(Multiprogramming)
 - 메모리에 여러 개의 프로세스가 동시에 진행된다.
 - CPU 사용 효율을 높일 수 있다.
