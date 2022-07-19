@@ -5,7 +5,7 @@
 - `운영체제`는 `컴퓨터 하드웨어를 관리하는 소프트웨어`이고 `응용 프로그램이 실행될 수 있도록 환경을 제공`한다.
 - `프로세스`, 자원, 유저 인터페이스를 관리한다.
 - 운영체제는 프로그램이 함부로 시스템에 접근하지 못하도록 모드를 나눠둔다. 커널모드와 사용자모드가 있다.
-@@@<사진2>
+![사진2](https://user-images.githubusercontent.com/67992469/179715199-0ea771a4-4fdf-46e6-9ee2-a03b5b881238.png)
 
 ### 부트스트랩(bootstrap)
 - 컴퓨터 시스템이 시작될 때 `운영 체제(OS)를 초기화`하는 프로그램이다.
@@ -28,7 +28,9 @@
 
 #### exit() 
 - 프로그램을 종료시킨다. 모든 자원을 반납하고 운영체제에게 자신이 종료됨을 알린다.
- 
+
+![5](https://user-images.githubusercontent.com/67992469/179715380-4be452eb-c289-44ca-9ad3-a26bd041d8dc.png)
+
 1. 실행
 	- 부모 프로세스와 자식 프로세스가 동시간에 실행된다.
 	- 부모 프로세스는 자식 프로세스가 종료되기까지 기다린다.
@@ -78,9 +80,7 @@
 - 여러개의 코어가 같은 칩에 있다.
 - 칩 내부의 통신(On-chip communication)이 칩 사이의 통신(Between-chip communication)보다 더 빠르기 때문에 여러 개의 칩에 하나의 코어만 두는 시스템보다 더 효율적
 
-![사진](https://user-images.githubusercontent.com/67992469/179715133-18527b4a-3e11-4491-b278-1352bc865d0a.png)
-
-#### 멀티프로그래밍(Multiprogramming)
+![1](https://user-images.githubusercontent.com/67992469/179715133-18527b4a-3e11-4491-b278-1352bc865d0a.png)
 - 메모리에 여러 개의 프로세스가 동시에 진행된다.
 - CPU 사용 효율을 높일 수 있다.
 
@@ -93,7 +93,7 @@ cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있�
 
 ### 프로세스
 - 실행 중인 프로그램을 말한다. 즉, 디스크에서 메모리에 올라온 것을 말한다.
-<사진3>
+![사진3](https://user-images.githubusercontent.com/67992469/179715199-0ea771a4-4fdf-46e6-9ee2-a03b5b881238.png)
 - Text section (executable code)
 - Data section (global variable)
 - Heap section (memory that is dynamically alllocated during program run time)
@@ -105,7 +105,7 @@ cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있�
 	4. I/O device
  
 #### 프로세스 상태
-<사진4>
+![4](https://user-images.githubusercontent.com/67992469/179715334-f2fc4284-d106-4e07-95ba-b6c150f85f83.png)
 - New: 프로세스가 막 생성되었을 때.
 - Ready: 프로세스가 프로세서에게 할당 되길 기다릴 때
 - Running: 프로세스가 할당되어 실행될 때.
@@ -136,7 +136,7 @@ cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있�
 - 프로세스는 독립적이거나 협력하며 동작한다. 
 - 커널 영역에서 IPC라는 내부 프로세스간 통신을 제공하게 되고, 프로세스는 커널이 제공하는 IPC설비를 이용해서 프로세스간 통신을 할 수 있게 된다.
 - 생산자-소비자 문제(producer-consumer problem)는 여러 개의 프로세스를 어떻게 동기화할 것인가에 관한 문제이다.
-@@@<그림6>
+![6](https://user-images.githubusercontent.com/67992469/179715486-ab24b2a9-1bd5-4a86-b24f-6cd21b8abb39.png)
 
 #### 1. Shared memory
 - 프로세스끼리 특정 공통의 메모리 영역을 공유하며 상호간 통신하는 방법
@@ -168,9 +168,9 @@ cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있�
 ### 파이프(Pipes)
 - 파이프는 부모 프로세스와 자식 프로세스가 통신할 때 사용하는 방식이다.
 - 파이프는 단방향 통신만 가능하기 때문에 양방향 통신을 하고 싶다면 두 개의 파이프가 필요하다.
-- 파이프에 이름을 붙인 named pipe를 사용하면 꼭 부모-자식 관계가 아니더라도 파이프를 이용해 통신할 수 있다. 
+- 파이프에 이름을 붙인 named pipe를 사용하면 꼭 부모-자식 관계가 아니더라도 파이프를 이용해 통신할 수 있다.
 
-@@@ <사진7>
+![7](https://user-images.githubusercontent.com/67992469/179715618-f597b54b-f77d-45b2-858c-711ef93316f0.png)
 - Producer write, Consumer read
 ```c
 pipe(int fd[]);
