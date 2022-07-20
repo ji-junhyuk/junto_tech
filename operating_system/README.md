@@ -262,7 +262,7 @@ fd[1] : the write end
 4. 하나의 프로세스가 레디 큐에서 대기한 시간부터 작업을 마칠 때까지 걸리는 시간(Turnaround time)
 5. 프로세스가 큐에서 대기한 시간(Wating time)
 6. 프로세스가 처음으로 CPU를 할당받기까지 걸린 시간(Response time)
-![a](https://github.com/ji-junhyuk/junto_tech/issues/15)
+![a](https://user-images.githubusercontent.com/67992469/179947151-893183c6-d44f-416a-a4f9-70a13c01d25c.png)
 
 #### 1. FCFS(First-Come, First-Served)
 - 먼저 들어온 프로세스를 프로세서에 할당하는 방식이다. 
