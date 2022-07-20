@@ -191,7 +191,7 @@ fd[1] : the write end
 - cpu를 점유하는 기본적인 단위이다. thread ID, program counter, register set, stack도 스레드별로 달라져야 한다.
 - 스레드들은 해당 프로세스의 자원을 공유한다. 스택 영역을 제외한 코드 영역, 데이터 영역, 힙 영역을 공유한다.
 스택 영역이 독립적이기에 서로 다른 작업을 수행할 수 있다.
-<사진1>
+![1](https://user-images.githubusercontent.com/67992469/179941999-00d9a188-073d-4a73-8d6d-376636728f34.png)
 
 #### 멀티스레드 프로그래밍 장점
 1. 반응 : 입출력으로 처리로 작업이 진행되지 않더라도 다른 스레드가 작업을 계속하여 사용자의 작업 요구에 빠르게 응답할 수 있음
@@ -199,7 +199,7 @@ fd[1] : the write end
 3. 경제성 : 프로세스를 만드는 것에 비해 경제성이 좋다. 컨텍스트 스위치 비용도 마찬가지.
 4. 확장성 : 멀티 프로세서 구조에서 이점을 챙길 수 있다.
 
-<사진2>
+![2](https://user-images.githubusercontent.com/67992469/179942070-eb2a5af6-b2aa-4d0a-8ec2-320760ea4105.png)
 - 사용자의 요청에 `새로운 프로세스를 만들어 응답하는 것`이 아닌 `스레드를 생성해 request를 응답`한다.
 
 #### 멀티코어 시스템에서 고려할 점
@@ -208,11 +208,12 @@ fd[1] : the write end
 3. 데이터 분리(data splitting)
 4. 데이터 종속성(data dependency)
 5. 시험 및 디버깅(testing and debuggin)
-<3>
+
+![3](https://user-images.githubusercontent.com/67992469/179942118-c8cd87c6-7ed3-43a9-9360-821387f881b4.png)
 
 #### 유저 스레드와 커널 스레드
 유저 스레드는 사용자 수준의 스레드가 관리하는 스레드다. 스레드 라이브러리에는 대표적으로 POSIX Pthreads, window thread, java thread가 있다. 커널 스레드는 커널이 지원하는 스레드다. 사용자 스레드와 달리 안정성이 있으나 생성 속도 등 무겁다.
-<4>
+![4](https://user-images.githubusercontent.com/67992469/179947809-a0454758-2f9a-49ff-9fa0-1b023d092ade.png)
 
 #### 일대일 관계
 - 하나의 스레드가 시스템 콜을 호출하더라도 다른 스레드가 실행될 수 있기 때문에 다대일 모델보다 `더 많은 동시성`을 제공한다.
@@ -233,6 +234,60 @@ fd[1] : the write end
 3. OpenMP
 4. GCD(grand central dispatch)
  
+---
+
+### CPU Scheduling 
+- 운영체제가 어떤 프로세스를 프로세서에 할당할 것인가 정하는 것을 말한다.
+
+#### dispatch
+- 운영체제가 프로세스를 프로세서에 할당하는 것을 디스패치라고 한다.
+- ready에서 running으로 상태가 바뀌며, 레디큐에 있는 프로세스 중 어떤 프로세스를 디스패치 할 것인가를 정하는 것이 CPU Scheduling이라고 한다.
+![b](https://user-images.githubusercontent.com/67992469/179947201-ab50f071-a9de-4c0c-8bce-b39b3ac87a71.png)
+
+#### Preemptive vs Non-Preemptive
+- 선점 방식은 운영체제가 강제로 프로세스의 사용권을 통제하며, 비선점 방식은 프로세스가 스스로 다음 프로세스에게 자리를 넘겨주는 방식이다.
+1. running to waiting state
+2. running to ready state
+3. waiting to ready state
+4. process terminates  
+- 2, 3번을 Preemptive로 할 것인가 말것인가의 문제
+
+ 
+### 스케쥴링 알고리즘
+
+#### 평가 기준
+1. 수행시간(Burst time)
+2. CPU 사용량(CPU utilization)
+3. 단위 시간당 끝마친 프로세스의 수(Throughput)
+4. 하나의 프로세스가 레디 큐에서 대기한 시간부터 작업을 마칠 때까지 걸리는 시간(Turnaround time)
+5. 프로세스가 큐에서 대기한 시간(Wating time)
+6. 프로세스가 처음으로 CPU를 할당받기까지 걸린 시간(Response time)
+![a](https://github.com/ji-junhyuk/junto_tech/issues/15)
+
+#### 1. FCFS(First-Come, First-Served)
+- 먼저 들어온 프로세스를 프로세서에 할당하는 방식이다. 
+- convoy effect(호송 효과) 
+ 
+#### 2. SJF(Shortest Job First)
+- 프로세스의 수행 시간이 짧은 순서에 따라 프로세서에 할당한다.
+- 과거의 cpu사용량을 보고 지수적 평균을 구한다.
+
+#### 3. SRF(Shortest Remaining Time First)
+- 프로세서의 남은 수행 시간이 짧은 순서에 따라 프로세서에 할당한다.
+ 
+#### 4. RR(Round Robin)
+- 일정 시간 할달량(Time quantum)단위로 여러 프로세스를 번갈아가며 프로세서에 할당한다.
+- Preemptive
+ 
+#### 5. MLQ(Multi-Level Queue)
+- 분리된 레디큐에 각각의 우선순위를 두어 프로세서에 할당하는 방식이다.
+ 
+#### 6. MLFQ(Multi-Level feedback Queue)
+- feedback을 통해 알고리즘을 향상 시킨다.
+
+#### 7. Real-Time Operating System
+- soft realtime(통신), hard realtime(로켓)
+
 ---
 
 ## 참고자료
