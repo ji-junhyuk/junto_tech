@@ -375,9 +375,7 @@ Data DQGetLast(Deque *pdeq)
 ```
 ### C++ STL queue
 ### 관련 문제
-|     | 문제  | 제목                                | 풀이     |
-|-----|-------|-------------------------------------|----------|
-| BOJ | 10845 | 큐(s4)                              | [코드]() |
-| BOJ | 18258 | 큐2(s4)                             | [코드]() |
-| BOJ | 2164  | 카드2(s4)                           | [코드]() |
+바킹독 문제집 참고.
 ### 참고자료
+https://github.com/encrypted-def/basic-algo-lecture/blob/master/workbook/0x07.md
+https://github.com/encrypted-def/basic-algo-lecture/blob/master/workbook/0x07.md
