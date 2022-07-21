@@ -1,6 +1,3 @@
-## 운영체제
-## 컴퓨터 시스템 구조
-## 프로세스
 ### 운영체제
 - `운영체제`는 `컴퓨터 하드웨어를 관리하는 소프트웨어`이고 `응용 프로그램이 실행될 수 있도록 환경을 제공`한다.
 - `프로세스`, 자원, 유저 인터페이스를 관리한다.
@@ -296,7 +293,7 @@ fd[1] : the write end
   
 #### 경쟁상태(Race Condition)
 - 둘 이상의 프로세스(스레드)가 공유 데이타(shared data)에 접근하여 값을 변경할 때, 어떤 순서로 실행되는지에 따라 결과 값이 달라질 수 있는 상태를 말한다.
-<사진1>
+![1](https://user-images.githubusercontent.com/67992469/180163587-18b3074c-d671-4754-a22d-cb6281868a00.png)
 
 #### 임계영역(The Critical-Section Problem)
 - 경쟁상태가 일어날 수 있는 부분을 임계영역이라고 한다.
@@ -338,7 +335,211 @@ while (1)
  1. Memory barriers or fence(메모리 디펜스)
  2. Hardware instruction(하드웨어 지시사항)
  3. Atomic variable(원자적인 변수)
-	- test, compare_and_swap()
+	- test_and_set() and compare_and_swap()
+ 
+#### 뮤텍스 잠금(Mutex Locks)
+- mutex locks은 여러 스레드가 공통 리소스에 접근하는 것을 제어하는 기법으로, lock이 하나만 존재할 수 있는 locking 매커니즘을 따른다.
+- 이미 하나의 스레드가 임계영역에서 작업중인 lock상태라면, 다른 스레드들은 임계영역에 접근할 수 없다.
+- 뮤택스 잠금에는 바쁜 대기(busy waiting)가 존재한다. 어떤 프로세스가 임계구역에 이미 들어가있으면 다른 프로세스는 반드시 acquire()을 얻기 위해 계속해서 루프를 돌려야 함.
+
+```c
+while (1)
+{
+	acquire lock
+	//Critical section
+	release lock
+	//Remainder 
+```
+
+- acquire
+```c
+acquire()
+{
+	while (!avaliable)
+	// busy wait
+	available = false;
+}
+```
+
+- release()
+```c
+release()
+{
+	available = true;
+}
+```
+
+#### 스핀락(spinlock)
+- 뮤텍스 중 `busy waiting`하는 것을 spinlock이라고 한다.
+- 프로세스는 사용가능하기 전까지 락에서 기다리며 빙빙 돔.
+
+#### 세마포어(semaphore)
+- 세마포어는 카운터를 이용해 동시에 리소스에 접근할 수 있는 프로세스를 제한한다. P(roberen 테스트하다), V(erhogen 증가하다)라는 명령으로 접근할 수 있다.
+- 카운팅 세마포어와 이진 세마포어로 구분할 수 있음. 이진 세마포어는 뮤택스 락과 비슷하다.
+- 편리하고 효과적이지만 `timing error`(특정한 시퀀스를 쓰면, 항상 잃어나지도 않고 찾기가 어렵다)가 발생한다.
+
+- `wait()` : decrements the count
+```c
+wait(S)
+{
+    while (S <= 0) {
+    	; 
+    }
+    S--;
+}
+signal()의 정의는 다음과 같음:
+```
+
+- `signal()` : increment the count
+```c
+signal(S)
+{
+    S++;
+}
+```
+
+#### 모니터(monitor)
+- 모니터는 좀 더 고수준의 동기화 기능을 제공한다.
+- 모니터형 `monitor type`이란 모니터 내에서 상호배제를 지원하는 프로그래머가 정의한 연산을 갖는 ADT를 말한다.
+- condition 생성하여 추가적인 동기화 메커니즘을 적용한다.
+![2](https://user-images.githubusercontent.com/67992469/180163646-16bff569-99a2-4f8b-8bcc-801d5123546c.png)
+
+#### 모니터 구조
+![3](https://user-images.githubusercontent.com/67992469/180163752-0e34c896-c118-46e2-9ba3-666a794f586c.png)
+- 모니터는 공유자원 + 공유자원 접근 함수로 이루어졌고, 2개의 큐를 가지고 있다.
+- mutual exclusion(상호 배타) queue, conditional synchronization(조건 동기) queue가 있다.
+	- 상호배타 큐 : 공유 자원에 하나의 프로세스만 접근하도록 한다.
+	- 조건동기 큐 : 이미 공유자원을 사용하고 있는 프로세스가 특정한 호출 wait()을 통해 조건동기 큐로 들어갈 수 있다.
+- 조건동기 큐에 들어가 있는 프로세스는 공유자원을 사용하고 있는 다른 프로세스에 의해 깨워줄 수 있다. 이 역시 깨워주는 프로세스에서 특정한 호출 notify()을 해주며, 깨워주더라도 이미 공유자원을 사용하고 있는 프로세스가 해당 구역을 나가야 비로소 큐에 있던 프로세스가 실행된다.
+
+#### 라이브니스(Liveness)
+- 세마포어와 모니터는 deadlock, bounded waiting 문제를 해결하지 못한다.
+- `deadlock` and `priority inversion`
+ 
+---
+#### 동시성 문제들
+- Bounded-Buffer Problem
+	- 생산자-소비자 문제
+```c
+while (1)
+{
+	wait(empty);
+	wait(mutex);
+	
+	signal(mutex);
+	signal(full);
+}
+```
+
+```c
+while (1)
+{
+	wait(full);
+	wait(mutex)
+	
+	signal(mutex);
+	signal(empty);
+}
+```
+- Readers-Writers Problem
+	- 2개 이상의 reader들이 동시에 shared data에 접근이 가능하다.
+	- writer 끼리는 동시에 접근하면 안된다.
+		1. reader가 접근 권한을 얻은 게 아니라면 그 어떠한 reader도 대기해서는 안된다는 것.
+		2. writer가 쓸 준비가 된 순간 최대한 빠르게 작성 해야한다는 것.
+	- starvation이 발생할 수 있다.
+	- Reader-Writer Locks
+```
+semaphore rw_mutex = 1;  // readers & writers
+semaphore mutex = 1; // mutual exclusion
+int read_count = 0; 
+
+while (1)
+{
+	wait(rw_mutex);
+	/* writing is performed */
+	...	
+	signal(rw_mutex);
+}
+
+while (1)
+{
+	wait(mutex);
+	read_count++;
+	if (read_count == 1)
+		wait(rw_mutex);
+	signal(mutex);
+	/* reading is performed */
+	...
+	wait(mutex);
+	read_count--;
+	if (read_count == 0)
+		signal(rw_mutex);
+	signal(mutex);
+```
+- Dining-Philosophers Problem
+	 - One simple solution : each chopstick with a semaphore.
+	 	- Philosophers acquires a chopstick by executing a wait() operation.
+		- releases chopstick by executing a signal() operation.
+		- deadlock and starvation
+```c
+semaphore chopstick[5];
+
+while (1)
+{
+	wait(chopstick[i]);
+	wait(chopstick[(i + 1) % 5]);
+	/* eat for a while */	
+	signal(chopstick[i]);
+	signal(chopstick[i + 1] % 5);
+	/* think for a while */
+}	
+```
+		- allow `four philosophers`
+		- `both chopstick are available`
+		- asymmetric
+			 - odd-number : first left and right;
+			 - even-number : right and left;
+			 - starvation까지 해결하긴 어렵다.
+	- monitor solution
+		- 철학자는 오로지 양쪽 젓가락 둘 다 있을 때만 젓가락 들 수 있다는 제약 조건을 추가한다.
+		- thinking, hungry, eating 3가지 상태.
+```c
+monitor DiningPhilosophers
+{
+    enum {THINKING, HUNGRY, EATING} state[5];
+    condition self[5];
+    
+    void pickup(int idx) 
+	{
+    	state[idx] = HUNGRY;
+        test(idx);
+        if (state[idx] != EATING) 
+            self[idx].wait();
+    }
+    
+    void test(int idx) 
+	{
+    	if ((state[(idx + 4) % 5] != EATING) &&
+            (state[idx] == HUNGRY) &&
+            (state[(idx + 1) % 5] != EATING)) 
+		{
+            state[idx] = EATING;
+            self[idx].signal();
+        }
+    }
+    
+    initialization_code() 
+	{
+    	for (int idx = 0; idx < 5; ++idx)
+            state[idx] = THINKING;
+    }
+}
+```
+
+#### 대안적 해결방안
+1. Transactional Memory
+2. OpenMP
+3. Functional Programming Language
 
 ---
 
@@ -352,3 +553,4 @@ while (1)
 - https://github.com/USA-SOPT-PANGYO-GAZA/Operating-System
 - https://github.com/jeonyeohun/Getting-Ready-For-Interview/blob/main/OperatingSystem/01_Process.md
 - https://velog.io/@yanghl98/OS%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C-IPC%EB%9E%80
+- 자바 모니터 https://velog.io/@codemcd/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9COS-11.-%EB%AA%A8%EB%8B%88%ED%84%B0
