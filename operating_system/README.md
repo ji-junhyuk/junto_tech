@@ -289,20 +289,57 @@ fd[1] : the write end
 - soft realtime(통신), hard realtime(로켓)
 
 ---
-### 프로세스 동기화
-- 협력 프로세스 (영향 주거나 받거나, 로지걸 어드레스 스페이스 공유 또는 쉐어드 데이타)
-- concurrent accest to shared data (data inconsitency)
-- 협력 프로세스가 실행순서를 보장해줘야. 
-- 데이타 일관성이 유지된다.
-- 데이타의 통일성 (integrity of data)
-	 - concurrent execution (언제 어디서나 intterrupt 될 수 있음)
-	 - 다음 프로세스가 그것을 실행하다보면 ㅜ문제
-	 - parallel execution (여러개의 프로세스가 동시에 분리된 코어에서 실행하게 되면)
 
-- producer-consumer problem
-	 - 비동적으로 실행.
-	 - 새 아이템을 푸쉬할 때마다 +1, 꺼내갈때마다 -1
-	 
+### 프로세스 동기화
+- 프로세스(스레드)는 동시에 실행(parallel execution)될 수 있다. 실행 순서를 보장하여 데이터 일관성이 유지되어야 한다.(integrity of data)
+  
+  
+#### 경쟁상태(Race Condition)
+- 둘 이상의 프로세스(스레드)가 공유 데이타(shared data)에 접근하여 값을 변경할 때, 어떤 순서로 실행되는지에 따라 결과 값이 달라질 수 있는 상태를 말한다.
+<사진1>
+
+#### 임계영역(The Critical-Section Problem)
+- 경쟁상태가 일어날 수 있는 부분을 임계영역이라고 한다.
+#### 임계영역 해결
+1. 상호배제(Mutual exclution) : 프로세스가 critical section에서 작업중일 때 다른 프로세스는 여기에 진입할 수 없다.
+2. 진행(Progress) : critical section에 작업중인 프로세스가 없다면 다른 프로세스가 진입할 수 있어야 한다.
+cf. avoid deadlock
+3. 한정대기(Bounded waiting) : critical section에 진입하려는 프로세스가 영원히 기다려서는 안된다.
+
+#### 소프트웨어 솔루션
+- Dekker's algorithm(two process)
+- Eisenberg and McGuire's Algorithm(N process)
+- Bakery Algorithm
+- `peterson's` algorithm 
+	- classic, no guarantee
+	- will work corretly(think assembly level)
+	- prove(1mutual exclusion, 2no deadlock, 3bounded waiting)
+
+#### 피터슨 법칙(Peterson's Solution)
+- 프로세스가 작업중인지 저장하는 변수(flag)와 critical section에 진입하고자 하는 변수 turn을 활용한다.
+- Section of code
+	1. entry-section : 크리티컬 섹션에 진입
+	2. exit-section : 허가를 반납
+	3. remainder-section : 남은 코드 영역
+```c
+while (1)
+{
+	flag[i] = true;
+	turn = j;
+	while (flag[j] && turn == j)
+		;
+	// Critical Section
+	flag[i] = false;
+	// Remainder	
+}
+```
+
+#### 임계영역 해결을 위한 Hardware-based 3가지 방법
+ 1. Memory barriers or fence(메모리 디펜스)
+ 2. Hardware instruction(하드웨어 지시사항)
+ 3. Atomic variable(원자적인 변수)
+	- test, compare_and_swap()
+
 ---
 
 ## 참고자료
