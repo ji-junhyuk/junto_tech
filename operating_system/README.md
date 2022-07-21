@@ -477,6 +477,7 @@ while (1)
 	signal(mutex);
 ```
 - Dining-Philosophers Problem
+![1](https://user-images.githubusercontent.com/67992469/180186414-a18f44d6-1d89-48c6-8400-569c9729430a.png)
 	 - One simple solution : each chopstick with a semaphore.
 	 	- Philosophers acquires a chopstick by executing a wait() operation.
 		- releases chopstick by executing a signal() operation.
