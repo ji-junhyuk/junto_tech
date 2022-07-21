@@ -289,6 +289,21 @@ fd[1] : the write end
 - soft realtime(통신), hard realtime(로켓)
 
 ---
+### 프로세스 동기화
+- 협력 프로세스 (영향 주거나 받거나, 로지걸 어드레스 스페이스 공유 또는 쉐어드 데이타)
+- concurrent accest to shared data (data inconsitency)
+- 협력 프로세스가 실행순서를 보장해줘야. 
+- 데이타 일관성이 유지된다.
+- 데이타의 통일성 (integrity of data)
+	 - concurrent execution (언제 어디서나 intterrupt 될 수 있음)
+	 - 다음 프로세스가 그것을 실행하다보면 ㅜ문제
+	 - parallel execution (여러개의 프로세스가 동시에 분리된 코어에서 실행하게 되면)
+
+- producer-consumer problem
+	 - 비동적으로 실행.
+	 - 새 아이템을 푸쉬할 때마다 +1, 꺼내갈때마다 -1
+	 
+---
 
 ## 참고자료
 - 인프런 강의 : https://www.inflearn.com/course/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C-%EA%B3%B5%EB%A3%A1%EC%B1%85-%EC%A0%84%EA%B3%B5%EA%B0%95%EC%9D%98
