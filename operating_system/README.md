@@ -668,6 +668,63 @@ monitor DiningPhilosophers
 	- paging은 virtual memory에서 굉장히 큰 위력을 발휘.
 ![h](https://user-images.githubusercontent.com/67992469/180391051-a6590dfc-ff1a-4f99-bd7b-5a13b2a123f4.png)
 
+---
+
+#### 가상 메모리
+- 프로세스 실행이 메모리에 완전히 다 올리지 않아도 (심지어 physical memory보다 더 커도) 실행 할 수 있게 한다.
+- main memory를 큰 저장소로 추상화하여 physical memory와 logical memory를 분리한다.
+- 굉장히 효율적인 메카니즘. 
+	- 1. 파일공유 2. 라이브러리 공유 3. 프로세스 생성 등
+<사진1>
+
+#### 가상 주소 공간(virtual address space)
+- throught page sharing
+<사진2>
+
+#### Demand Paging
+- 필요한 페이지만 메모리에 올리는 것으로, 요구 페이징(demand paging)이라 부른다.
+- in memory에 있는지 in secondary storage에 있는지.
+	- valid-invalid bit를 사용한다.
+- Page Fualt
+	1. Check an internal table.
+	2. page fault, page it in.
+	3. find free frame.
+	4. read the desired page.
+	5. modify the internal table and the page table.
+<사진3>
+
+#### Pure Demand Paging
+- 요청할 때만 페이지를 가져옴
+
+#### Locality of Reference 
+- 참조의 지역성(locality of reference)을 갖는 경향이 있어 요구 페이징할 때 성능이 괜찮게 나온다.
+- 대개 프로세스들은 항상 새로운 페이지를 액세스하지 않는다.
+- can increase the locality of code or data
+
+#### Hardware Support Demand Paging
+- Page table
+- Secondary memory(swap space)
+- page fault -> O/S trap -> wait queue -> swap out ... (context switch)
+- 프로세스별로 page table을 잘 관리해야한다.
+- instruction fetch, operand fetch
+
+#### Page Replacement 
+- 어떤 프로세스에 몇개의 frame을 할당해주는 것이 좋아지는가?
+- 어떤 페이지를 victim해야 효율이 좋아지는가?
+	- 하드웨어 I/O 는 expensive.
+1. FIFO
+2. optimal page-replacement algorithm : 가장 오래 사용되지 않은 페이지를 교체 
+3. least recently used (LRU) algorithm : 가장 최신인 과거로 미래를 근사할 수 있다면 가장 오랜 기간동안 사용하지 않은 페이지를 교체 
+ 
+#### Thrashing
+- 페이지 폴트가 계속적으로 자주 발생하게 되어 프로세스의 실행 시간보다 페이지를 교체하는 시간이 더 많아지는 현상이다. 
+ 
+---
+
+#### Storage Management
+
+#### Security & Protection
+
 ## 참고자료
 - 인프런 강의 : https://www.inflearn.com/course/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C-%EA%B3%B5%EB%A3%A1%EC%B1%85-%EC%A0%84%EA%B3%B5%EA%B0%95%EC%9D%98
 - 정보이론 : https://blog.acronym.co.kr/433
