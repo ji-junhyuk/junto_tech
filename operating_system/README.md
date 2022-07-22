@@ -675,11 +675,11 @@ monitor DiningPhilosophers
 - main memory를 큰 저장소로 추상화하여 physical memory와 logical memory를 분리한다.
 - 굉장히 효율적인 메카니즘. 
 	- 1. 파일공유 2. 라이브러리 공유 3. 프로세스 생성 등
-<사진1>
+![1](https://user-images.githubusercontent.com/67992469/180416787-aad7dc62-474f-4e64-a770-98814bafedda.png)
 
 #### 가상 주소 공간(virtual address space)
 - throught page sharing
-<사진2>
+![2](https://user-images.githubusercontent.com/67992469/180416828-0dcd212d-1b01-4616-b5ff-74ea342f67a3.png)
 
 #### Demand Paging
 - 필요한 페이지만 메모리에 올리는 것으로, 요구 페이징(demand paging)이라 부른다.
@@ -691,7 +691,7 @@ monitor DiningPhilosophers
 	3. find free frame.
 	4. read the desired page.
 	5. modify the internal table and the page table.
-<사진3>
+![3](https://user-images.githubusercontent.com/67992469/180416860-e0d66aef-ef1b-4e14-8dbd-69fed1fd8743.png)
 
 #### Pure Demand Paging
 - 요청할 때만 페이지를 가져옴
