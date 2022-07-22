@@ -540,9 +540,133 @@ monitor DiningPhilosophers
 #### 대안적 해결방안
 1. Transactional Memory
 2. OpenMP
-3. Functional Programming Language
+3. Functional Programming Language 
 
----
+#### 데드락(deaklock)
+- 프로세스 집합 내 다른 프로세스가 인터럽트(이벤트)하기를 기다리는 상태이다.
+- waiting thread는 resource가 다른 스레드에 의해 점유되어 있기에 자신의 상태를 바꾸지 못한다.
+- thread : Request -> Use -> Release
+
+#### 발생조건 4가지
+1. Mutual Exclusion(상호 배제)
+	- 적어도 한 개의 resource가 non-sharable.
+2. Hold and Wait(점유대기)
+	- 스레드가 적어도 한 개의 resource를 hold하고 waiting.
+3. No Preemption(선점 불가)
+4. Circular Wait(순환 대기) 
+
+#### Resource-Allocation Graph
+- Ti -> Rj (request edge)
+- Rj -> Ti (assignment edge)
+![1](https://user-images.githubusercontent.com/67992469/180392244-f8c14e12-4bbd-4bb0-a582-a3e000ac255b.png)
+
+- 사이클이 형성되지 않으면 데드락 상태에 진입할 수 없다.
+- claim edge(Ti -> Rj) : 스레드가 미래에 자원을 요청할 수 있는지 요청하는 것
+- cycle-detection algorithm.
+	- 데드락
+![2](https://user-images.githubusercontent.com/67992469/180392279-ea97170d-bb38-493b-bd59-e75f151c832d.png)
+	- 데드락 X
+![3](https://user-images.githubusercontent.com/67992469/180392310-c183440c-51e7-4acc-a659-b2ad0732e152.png)
+
+#### 데드락 다루기
+- ignore
+- prevent or avoid
+	- deadlock prevention
+	- deadlock avoidance: Banker's algorithm
+- system dead lock, detect it, recover it.
+
+#### Mutual Exclusion
+- some resource 본질적으로 non-sharable.
+
+#### Hold and Wait
+- impractical
+
+#### No preemption
+- cannot be generally used
+
+#### Circular Wait
+- sometime practical
+- total ordering, 리소스 요청은 increasing order로 한다.
+- not guarantee.
+
+#### Demerits of the Deadlock Prevention
+- low device utilization and reduced system throughtput
+- 미래의 데드락을 방지하기 위해선 리소스가 어떻게 요청되는지 알아야 한다. 
+  
+#### Safe State
+- 각 스레드에 자원을 할당해줄 수 있다.
+- 실행 순서가 있는 스레드.
+<사진2>
+
+#### Banker's Algorithm
+- n개의 스레드, m개의 리소스타입
+- available : 이용가능한 리소스 타입
+- max : 스레드가 요청할 수 있는 최대값
+- allocation : 현재 할당된 스레드
+- Need : 앞으로 요청할 리소스
+<사진4> 
+
+#### Main Memory
+- 메모리는 거대한 바이트의 배열로 구성되며, 각 바이트는 자신만의 주소를 가진다.
+- CPU는 프로그램 카운터의 값에 따라 메모리로부터 명령어를 가져옴. 이 명령어를 통해 추가적으로 특정 메모리 주소로부터 무언가를 불러오거나 저장을 할 수도 있다.
+- 우선 각 프로세스가 구분된 메모리 공간을 가짐을 보장해야한다. 프로세스 당 메모리 공간을 갖게 되면 프로세스끼리 보호를 해줄 수 있으며 동시성을 위해 여러 프로세스를 동시에 메모리에 올리기 위해선 제일 기초적인 과정이다.
+- 베이스 레지스터(base register)란 최소 합법 물리 메모리 주소를 의미한다. 리미트 레지스터 limit register란 범위의 크기를 의미한다.
+![a](https://user-images.githubusercontent.com/67992469/180390797-9d4ab4b9-4bc3-4b7d-8b5a-62be684fa210.png)
+- CPU 하드웨어가 사용자 모드에서 레지스터로 생성한 모든 주소를 비교해주는 것으로 메모리 공간 보호를 해줄 수 있음. 사용자 모드에서 운영체제 메모리나 다른 사용자의 메모리에 접근하면 운영체제에 트랩을 보내게 되며, 이를 치명적인 오류로 간주한다.
+![b](https://user-images.githubusercontent.com/67992469/180390836-7892a670-6fb6-4b0f-bc54-5321c6bf9393.png)
+#### 주소 바인딩(Address Binding)
+- 보통 프로그램은 디스크에 이진 실행 가능한 파일로 저장이 된다.
+- 대부분의 시스템은 사용자 프로세스가 물리 메모리 아무데나 있게 해줄 수 있다. 그래서 컴퓨터의 주소 공간이 00000에서 실행하더라도 사용자 프로세스의 주소 공간에 00000에서 시작하는 것은 아닌 것.
+- 컴파일러는 보통 이런 기호적인 주소를 위치를 바꿀 수 있는 주소로 바인딩을 함. 링커나 로더가 이후에 이 위치를 바꿀 수 있는 주소를 절대 주소로 바인딩한다. 각 바인딩은 한 주소 공간으로부터 다른 주소 공간으로의 매핑을 말한다.
+![c](https://user-images.githubusercontent.com/67992469/180390883-d851a82c-8a49-424a-8867-f9e071d4adae.png)
+	- 컴파일 시 compile time : 컴파일 시 메모리가 어디 있을지 안다면 절대 코드 생성.
+	- 로드 시 load time : 메모리가 어디위치 할지 모른다면 relocatable code로 생성.
+	- 실행 시 execution time : 실행 중에 한 메모리 세그먼트에서 다른 세그먼트로 옮길 수 있다면 바인딩은 실행 시까지로 지연 가능하다.
+
+
+#### 주소 공간
+- CPU에서 생성한 주소를 논리 주소(logical address)라고 한다. 반면에 메모리 장치에서 인식하는 주소, 즉 메모리의 메모리 주소 레지스터(memory-address register)에 저장하는 주소를 물리 주소(physical address)라고 한다.
+- 컴파일 시나 로드 시에 생성한 논리 주소는 물리 주소와 동일하지만, 실행 시에 생성한 논리 주소는 물리 주소와 다르다. 이 경우 논리 주소를 가상 주소(virtual address)라 부른다. 앞으로 논리 주소와 가상 주소를 사실상 동일하게 취급한다.
+![d](https://user-images.githubusercontent.com/67992469/180390918-62970665-f264-4a51-b719-35413dd0c675.png)
+- 시행 시 가상 주소를 물리 주소로 매핑해주는 과정은 메모리 관리 장치 memory-management unit (MMU)라는 하드웨어 장치에서 담당한다.
+
+#### 동적 링크 라이브러리 dynamically linked libraries (DLLs)
+- 사용자 프로그램이 실행될 때 링크된 시스템 라이브러리를 의미한다. 
+
+#### 연속 메모리 할당
+- 연속 메모리 할당(contiguous memory allocation)을 사용할 경우 각 프로세스는 메모리의 어떤 단일 구역에 들어가게 되는데, 이때 이 구역은 다음 프로세스가 들어갈 구역에 연속이다.
+
+#### 페이징
+- 메모리 관리를 프로세스의 물리적주소를 연속적으로 하지 않게 쪼갠다.
+	- avoid external fragmentation(외부단편화)
+	- avoid the associated need for compaction.
+- 물리 주소를 고정된 사이즈 블럭으로 나눈다(frame).
+- 논리 주소를 같은 사이즈 블럭으로 나눈다(page).
+- 물리 주소와 논리주소가 완전히 분리된다.
+![e](https://user-images.githubusercontent.com/67992469/180390970-32b07480-84ff-4f52-8f23-3aeb22c7282a.png)
+- page number는 page table에 의해 관리된다.
+![f](https://user-images.githubusercontent.com/67992469/180390996-a58d7cd7-e67b-4b3c-b571-76e36b411cea.png)
+- context switch도 page table포함.
+#### PTBR(page-table base regiister)
+- Faster context swithes, but still slower memory access time.
+
+#### TLB(Translation Look-aside Buffer)
+- a special, small, fast-lookup hardware cache memory.
+![g](https://user-images.githubusercontent.com/67992469/180391012-599f5dfe-7059-44ab-bb4a-8f8d31161fe3.png)
+
+#### Memory protection with paging
+- valid-invalid bit
+	- legal, illegal
+- shard pages
+	- sharing common code.
+	- standard C library libc : reentrant code (non-self-modifying code)
+
+#### swapping
+- 프로그램 사이즈가 하드 사이즈보다 더 클 때.
+	- 필요할 때만 쓰고(swapped) 그 외엔 메모리 밖에(out of memory)
+	- page를 가지고 swapping (page out, page in)
+	- paging은 virtual memory에서 굉장히 큰 위력을 발휘.
+![h](https://user-images.githubusercontent.com/67992469/180391051-a6590dfc-ff1a-4f99-bd7b-5a13b2a123f4.png)
 
 ## 참고자료
 - 인프런 강의 : https://www.inflearn.com/course/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C-%EA%B3%B5%EB%A3%A1%EC%B1%85-%EC%A0%84%EA%B3%B5%EA%B0%95%EC%9D%98
