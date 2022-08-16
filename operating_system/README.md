@@ -1,9 +1,25 @@
 ### 운영체제
-- `운영체제`는 `컴퓨터 하드웨어를 관리하는 소프트웨어`이고 `응용 프로그램이 실행될 수 있도록 환경을 제공`한다.
-- `프로세스`, 자원, 유저 인터페이스를 관리한다.
+- `operating system` is a `software` that operates a `computer system`.
+- is a program `running at all times` on the computer.
+- to `provide` `system services to aplication programs` 
+- to `manage` `process, resources, user interfaces`, and so on.
 - 운영체제는 프로그램이 함부로 시스템에 접근하지 못하도록 모드를 나눠둔다. 커널모드와 사용자모드가 있다.
 ![사진2](https://user-images.githubusercontent.com/67992469/179715199-0ea771a4-4fdf-46e6-9ee2-a03b5b881238.png)
 
+### 정보
+- computer is a machine that processes the information.
+```
+l(x) = -log2P(x);
+```
+- An information an be difined as a `quantitative` representation that `measures` the `uncertainty`.
+- 정보의 최소 단위(bit, binary digit)
+- 정보의 처리: 정보의 상태 변환
+ 
+### 폰 노이만 아키텍쳐
+- A stored-program computer is a computer that `stores program in a memory`.
+- ISA(Instruction Set Architecture)
+- Program is a `set of instruction` that tells a computer's hardware to perform a task.
+ 
 ### 부트스트랩(bootstrap)
 - 컴퓨터 시스템이 시작될 때 `운영 체제(OS)를 초기화`하는 프로그램이다.
 
