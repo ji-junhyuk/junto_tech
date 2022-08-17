@@ -35,7 +35,7 @@ l(x) = -log2P(x);
 ---
 
 ### 프로세스
-- 실행 중인 프로그램을 말한다. 즉, 디스크에서 메모리에 올라온 것을 말한다.
+- 실행 중인 프로그램을 말한다(a process is a program in execution). 즉, 디스크에서 메모리에 올라온 것을 말한다.
 ![사진3](https://user-images.githubusercontent.com/67992469/179715276-ee7826c7-f81f-43d4-85b7-c8147f2b2f2a.png)
 - Text section (executable code)
 - Data section (global variable)
@@ -46,6 +46,7 @@ l(x) = -log2P(x);
 	2. Memory
 	3. files
 	4. I/O device
+- a program that perform `a single thread of execution`.
  
 #### 프로세스 상태
 ![4](https://user-images.githubusercontent.com/67992469/179715334-f2fc4284-d106-4e07-95ba-b6c150f85f83.png)
@@ -54,7 +55,7 @@ l(x) = -log2P(x);
 - Running: 프로세스가 할당되어 실행될 때.
 - Waiting: 프로세스가 이벤트를 기다릴 때.
 - Terminated: 프로세스의 실행을 끝냈을 때.
-
+ 
 #### PCB(Process Control Block, TCB)
 - 프로세스가 가진 모든 정보를 저장하는 구조체를 말한다. 이는 운영체제가 관리한다.
 	- `Process state` : 프로세스 상태
@@ -67,12 +68,22 @@ l(x) = -log2P(x);
 
 #### Scheduling Queue
 - 프로세스가 시스템에 들어오면, `준비 큐(ready queue)`에 들어간다.  
-- 일반적으로 링크드리스트로 규현된다.
+- processes that are waiting for a certain event to occur are placed in a `waiting queue`.
+(waiting queue -> ready queue)
+- 일반적으로 링크드리스트로 구현된다.
+<사진 30>
 
-#### Context Switch
+#### Queueing Diagram
+<사진 31>
+
+#### Context Switch(문맥 교환)
+- The `context` of a process is represented in the PCB.
 - 프로세서에 할당된 프로세스를 바꾸는 것을 말한다.
-- 인터럽트가 발생하면 현재 실행하고 있는 프로세스 내용을 시스템에 저장한다. 새로운 프로세스를 필요하며 나중에 필요할 때 전에 내용을 복원할 수 있다.
-
+- 인터럽트가 발생하면 현재 실행하고 있는 프로세스 내용(current context of running process)을 시스템에 저장한다. 새로운 프로세스를 필요하며 나중에 필요할 때 전에 내용을 복원할 수 있다.
+- switch the CPU core to another process
+	- performs a state `save` of the current process
+	- and a state `restore` of a different process
+<사진 34>
 ---
 
 ### 시스템 콜(system call)
@@ -93,21 +104,24 @@ l(x) = -log2P(x);
 
 #### exit() 
 - 프로그램을 종료시킨다. 모든 자원을 반납하고 운영체제에게 자신이 종료됨을 알린다.
+- deallocates and reclaims all the resource. (allocated memory, open files, and I/O buffer, etc)
 
 ![5](https://user-images.githubusercontent.com/67992469/179715380-4be452eb-c289-44ca-9ad3-a26bd041d8dc.png)
 
 1. 실행
-	- 부모 프로세스와 자식 프로세스가 동시간에 실행된다.
-	- 부모 프로세스는 자식 프로세스가 종료되기까지 기다린다.
+	- 부모 프로세스와 자식 프로세스가 동시간에 실행된다. (execute concurrently)
+	- 부모 프로세스는 자식 프로세스가 종료되기까지 기다린다. (parent waits until some or all its children have terminated)
 2. 주소 공간
-	- 자식 프로세스는 부모 프로세스를 복사한다.
-	- 자식 프로세스에 새로운 프로그램이 올려진다.
+	- 자식 프로세스는 부모 프로세스를 복사한다. (duplicate of the parent process)
+	- 자식 프로세스에 새로운 프로그램이 올려진다. (new program loaded it)
 
 #### 좀비 프로세스(Zombie)
 - 자식 프로세스가 종료되었고 부모 프로세스가 자식 프로세스의 종료 상태를 회수하지 않았을 경우에 자식 프로세스를 좀비 프로세스라고 한다.
+- a process that has terminated. but whose parent has not yet called wait();
 
 #### 고아 프로세스 (Orphan)
 - 부모 프로세스가 자식 프로세스보다 먼저 종료되면 자식 프로세스는 고아 프로세스라고 한다. 
+- a prcoess that has a parent process. who did not invoke wait() and instead terminated.
 
 ---
 
@@ -150,7 +164,7 @@ l(x) = -log2P(x);
 
 ### 멀티태스킹(Multitasking, Multiprocessing)
 - 여러 작업들을 동시에 메모리에 올리는 것이다.
-- 하나의 cpu를 가지고 자주 switch하는 방식으로 사용자의 눈에는 마치 동시에 작동하는 것으로 보인다. (시분할, 동시성)
+- 하나의 cpu를 가지고 자주 switch하는 방식으로 사용자의 눈에는 마치 동시에 작동하는 것으로 보인다. (시분할, time sharing)
 cf. CPU 스케쥴링(CPU Scheduling) : 여러개의 프로세스가 동시에 준비되어 있을 때 시스템은 어떤 프로세스를 다음에 실행시켜야 효율적일까?
 
 ### 멀티 프로그래밍(Multi Programming)
