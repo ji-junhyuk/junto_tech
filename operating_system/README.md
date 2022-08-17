@@ -242,7 +242,7 @@ fd[1] : the write end
 ### Two separate mode of operation
 1. `user mode` and `kernel mode`
 2. to ensure that an incorrect program cannot cause other programs to execute incorretly.
-[1](https://user-images.githubusercontent.com/67992469/185018725-a4274234-6097-49fe-ab2e-f9d26811231c.png)
+![1](https://user-images.githubusercontent.com/67992469/185018725-a4274234-6097-49fe-ab2e-f9d26811231c.png)
 
 #### 유저 스레드와 커널 스레드
 유저 스레드는 사용자 수준의 스레드가 관리하는 스레드다. 스레드 라이브러리에는 대표적으로 POSIX Pthreads, window thread, java thread가 있다. 커널 스레드는 커널이 지원하는 스레드다. 사용자 스레드와 달리 안정성이 있으나 생성 속도 등 무겁다.
