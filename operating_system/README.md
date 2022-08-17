@@ -19,9 +19,18 @@ l(x) = -log2P(x);
 - A stored-program computer is a computer that `stores program in a memory`.
 - ISA(Instruction Set Architecture)
 - Program is a `set of instruction` that tells a computer's hardware to perform a task.
+- first `fetches` an instruction from memory. and `exceuted`.
+- stores that instruction in the `instruction register`.
  
 ### 부트스트랩(bootstrap)
 - 컴퓨터 시스템이 시작될 때 `운영 체제(OS)를 초기화`하는 프로그램이다.
+
+### 인터럽트(interrupts)
+- Hardware may trigger an interrupt at any time by sending a signal to the CPU, usually by way of the system bus.
+
+### 가상화(Virtualization)
+- to `abstract hardware` of a single compute into several different execution environment
+- VMM : Virtual Machine Manager(VMWare, XEN, WSL and so on).
 
 ---
 
@@ -68,6 +77,8 @@ l(x) = -log2P(x);
 
 ### 시스템 콜(system call)
 - OS가 제공해주는 서비들을 사용할 수 있게 인터페이스를 제공한다.
+- provide an interface to the services made available by the OS.
+- API : Application Programming Interface (OS의 API가 System Call)
 
 #### fork()
 - 부모 프로세스는 자식 프로세스를 생성한다.
@@ -113,7 +124,7 @@ l(x) = -log2P(x);
  
 ---
 
-### 저장 시스템
+### 저장 시스템(stroage system)
 - 프로그램은 메인 메모리에 로드되어 실행되며, 메인 메모리는 보통 RAM(Random-Access-Memory)을 말한다. 그래서 보조 기억 장치가 필요하다.
 - 보조 기억 장치(storage)는 `저장 공간, 접근 시간에 따른 계층 구조`가 있다. 
 	1. register
@@ -133,7 +144,6 @@ l(x) = -log2P(x);
 #### 멀티코어(Multi core dsign)
 - 여러개의 코어가 같은 칩에 있다.
 - 칩 내부의 통신(On-chip communication)이 칩 사이의 통신(Between-chip communication)보다 더 빠르기 때문에 여러 개의 칩에 하나의 코어만 두는 시스템보다 더 효율적
-
 ![1](https://user-images.githubusercontent.com/67992469/179715133-18527b4a-3e11-4491-b278-1352bc865d0a.png)
 - 메모리에 여러 개의 프로세스가 동시에 진행된다.
 - CPU 사용 효율을 높일 수 있다.
@@ -141,7 +151,12 @@ l(x) = -log2P(x);
 ### 멀티태스킹(Multitasking, Multiprocessing)
 - 여러 작업들을 동시에 메모리에 올리는 것이다.
 - 하나의 cpu를 가지고 자주 switch하는 방식으로 사용자의 눈에는 마치 동시에 작동하는 것으로 보인다. (시분할, 동시성)
-cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있을 때 시스템은 어떤 프로세스를 다음에 실행시켜야 효율적일까?
+cf. CPU 스케쥴링(CPU Scheduling) : 여러개의 프로세스가 동시에 준비되어 있을 때 시스템은 어떤 프로세스를 다음에 실행시켜야 효율적일까?
+
+### 멀티 프로그래밍(Multi Programming)
+- runs more than one programming at a time.
+- keep several process in memory simultaneously.
+- to increase CPU utilization.
 
 ---
 
@@ -223,6 +238,11 @@ fd[1] : the write end
 5. 시험 및 디버깅(testing and debuggin)
 
 ![3](https://user-images.githubusercontent.com/67992469/179942118-c8cd87c6-7ed3-43a9-9360-821387f881b4.png)
+
+### Two separate mode of operation
+1. `user mode` and `kernel mode`
+2. to ensure that an incorrect program cannot cause other programs to execute incorretly.
+[1](https://user-images.githubusercontent.com/67992469/185018725-a4274234-6097-49fe-ab2e-f9d26811231c.png)
 
 #### 유저 스레드와 커널 스레드
 유저 스레드는 사용자 수준의 스레드가 관리하는 스레드다. 스레드 라이브러리에는 대표적으로 POSIX Pthreads, window thread, java thread가 있다. 커널 스레드는 커널이 지원하는 스레드다. 사용자 스레드와 달리 안정성이 있으나 생성 속도 등 무겁다.
@@ -371,7 +391,7 @@ while (1)
 ```c
 acquire()
 {
-	while (!avaliable)
+	while (!available)
 	// busy wait
 	available = false;
 }
