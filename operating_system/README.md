@@ -1,16 +1,41 @@
 ### 운영체제
-- `운영체제`는 `컴퓨터 하드웨어를 관리하는 소프트웨어`이고 `응용 프로그램이 실행될 수 있도록 환경을 제공`한다.
-- `프로세스`, 자원, 유저 인터페이스를 관리한다.
+- `operating system` is a `software` that operates a `computer system`.
+- is a program `running at all times` on the computer.
+- to `provide` `system services to aplication programs` 
+- to `manage` `process, resources, user interfaces`, and so on.
 - 운영체제는 프로그램이 함부로 시스템에 접근하지 못하도록 모드를 나눠둔다. 커널모드와 사용자모드가 있다.
 ![사진2](https://user-images.githubusercontent.com/67992469/179715199-0ea771a4-4fdf-46e6-9ee2-a03b5b881238.png)
 
+### 정보
+- computer is a machine that processes the information.
+```
+l(x) = -log2P(x);
+```
+- An information an be difined as a `quantitative` representation that `measures` the `uncertainty`.
+- 정보의 최소 단위(bit, binary digit)
+- 정보의 처리: 정보의 상태 변환
+ 
+### 폰 노이만 아키텍쳐
+- A stored-program computer is a computer that `stores program in a memory`.
+- ISA(Instruction Set Architecture)
+- Program is a `set of instruction` that tells a computer's hardware to perform a task.
+- first `fetches` an instruction from memory. and `exceuted`.
+- stores that instruction in the `instruction register`.
+ 
 ### 부트스트랩(bootstrap)
 - 컴퓨터 시스템이 시작될 때 `운영 체제(OS)를 초기화`하는 프로그램이다.
+
+### 인터럽트(interrupts)
+- Hardware may trigger an interrupt at any time by sending a signal to the CPU, usually by way of the system bus.
+
+### 가상화(Virtualization)
+- to `abstract hardware` of a single compute into several different execution environment
+- VMM : Virtual Machine Manager(VMWare, XEN, WSL and so on).
 
 ---
 
 ### 프로세스
-- 실행 중인 프로그램을 말한다. 즉, 디스크에서 메모리에 올라온 것을 말한다.
+- 실행 중인 프로그램을 말한다(a process is a program in execution). 즉, 디스크에서 메모리에 올라온 것을 말한다.
 ![사진3](https://user-images.githubusercontent.com/67992469/179715276-ee7826c7-f81f-43d4-85b7-c8147f2b2f2a.png)
 - Text section (executable code)
 - Data section (global variable)
@@ -21,6 +46,7 @@
 	2. Memory
 	3. files
 	4. I/O device
+- a program that perform `a single thread of execution`.
  
 #### 프로세스 상태
 ![4](https://user-images.githubusercontent.com/67992469/179715334-f2fc4284-d106-4e07-95ba-b6c150f85f83.png)
@@ -29,7 +55,7 @@
 - Running: 프로세스가 할당되어 실행될 때.
 - Waiting: 프로세스가 이벤트를 기다릴 때.
 - Terminated: 프로세스의 실행을 끝냈을 때.
-
+ 
 #### PCB(Process Control Block, TCB)
 - 프로세스가 가진 모든 정보를 저장하는 구조체를 말한다. 이는 운영체제가 관리한다.
 	- `Process state` : 프로세스 상태
@@ -42,16 +68,28 @@
 
 #### Scheduling Queue
 - 프로세스가 시스템에 들어오면, `준비 큐(ready queue)`에 들어간다.  
-- 일반적으로 링크드리스트로 규현된다.
+- processes that are waiting for a certain event to occur are placed in a `waiting queue`.
+(waiting queue -> ready queue)
+- 일반적으로 링크드리스트로 구현된다.
+<사진 30>
 
-#### Context Switch
+#### Queueing Diagram
+<사진 31>
+
+#### Context Switch(문맥 교환)
+- The `context` of a process is represented in the PCB.
 - 프로세서에 할당된 프로세스를 바꾸는 것을 말한다.
-- 인터럽트가 발생하면 현재 실행하고 있는 프로세스 내용을 시스템에 저장한다. 새로운 프로세스를 필요하며 나중에 필요할 때 전에 내용을 복원할 수 있다.
-
+- 인터럽트가 발생하면 현재 실행하고 있는 프로세스 내용(current context of running process)을 시스템에 저장한다. 새로운 프로세스를 필요하며 나중에 필요할 때 전에 내용을 복원할 수 있다.
+- switch the CPU core to another process
+	- performs a state `save` of the current process
+	- and a state `restore` of a different process
+<사진 34>
 ---
 
 ### 시스템 콜(system call)
 - OS가 제공해주는 서비들을 사용할 수 있게 인터페이스를 제공한다.
+- provide an interface to the services made available by the OS.
+- API : Application Programming Interface (OS의 API가 System Call)
 
 #### fork()
 - 부모 프로세스는 자식 프로세스를 생성한다.
@@ -66,21 +104,24 @@
 
 #### exit() 
 - 프로그램을 종료시킨다. 모든 자원을 반납하고 운영체제에게 자신이 종료됨을 알린다.
+- deallocates and reclaims all the resource. (allocated memory, open files, and I/O buffer, etc)
 
 ![5](https://user-images.githubusercontent.com/67992469/179715380-4be452eb-c289-44ca-9ad3-a26bd041d8dc.png)
 
 1. 실행
-	- 부모 프로세스와 자식 프로세스가 동시간에 실행된다.
-	- 부모 프로세스는 자식 프로세스가 종료되기까지 기다린다.
+	- 부모 프로세스와 자식 프로세스가 동시간에 실행된다. (execute concurrently)
+	- 부모 프로세스는 자식 프로세스가 종료되기까지 기다린다. (parent waits until some or all its children have terminated)
 2. 주소 공간
-	- 자식 프로세스는 부모 프로세스를 복사한다.
-	- 자식 프로세스에 새로운 프로그램이 올려진다.
+	- 자식 프로세스는 부모 프로세스를 복사한다. (duplicate of the parent process)
+	- 자식 프로세스에 새로운 프로그램이 올려진다. (new program loaded it)
 
 #### 좀비 프로세스(Zombie)
 - 자식 프로세스가 종료되었고 부모 프로세스가 자식 프로세스의 종료 상태를 회수하지 않았을 경우에 자식 프로세스를 좀비 프로세스라고 한다.
+- a process that has terminated. but whose parent has not yet called wait();
 
 #### 고아 프로세스 (Orphan)
 - 부모 프로세스가 자식 프로세스보다 먼저 종료되면 자식 프로세스는 고아 프로세스라고 한다. 
+- a prcoess that has a parent process. who did not invoke wait() and instead terminated.
 
 ---
 
@@ -97,7 +138,7 @@
  
 ---
 
-### 저장 시스템
+### 저장 시스템(stroage system)
 - 프로그램은 메인 메모리에 로드되어 실행되며, 메인 메모리는 보통 RAM(Random-Access-Memory)을 말한다. 그래서 보조 기억 장치가 필요하다.
 - 보조 기억 장치(storage)는 `저장 공간, 접근 시간에 따른 계층 구조`가 있다. 
 	1. register
@@ -117,15 +158,19 @@
 #### 멀티코어(Multi core dsign)
 - 여러개의 코어가 같은 칩에 있다.
 - 칩 내부의 통신(On-chip communication)이 칩 사이의 통신(Between-chip communication)보다 더 빠르기 때문에 여러 개의 칩에 하나의 코어만 두는 시스템보다 더 효율적
-
 ![1](https://user-images.githubusercontent.com/67992469/179715133-18527b4a-3e11-4491-b278-1352bc865d0a.png)
 - 메모리에 여러 개의 프로세스가 동시에 진행된다.
 - CPU 사용 효율을 높일 수 있다.
 
 ### 멀티태스킹(Multitasking, Multiprocessing)
 - 여러 작업들을 동시에 메모리에 올리는 것이다.
-- 하나의 cpu를 가지고 자주 switch하는 방식으로 사용자의 눈에는 마치 동시에 작동하는 것으로 보인다. (시분할, 동시성)
-cf. CPU 스케쥴링 : 여러개의 프로세스가 동시에 준비되어 있을 때 시스템은 어떤 프로세스를 다음에 실행시켜야 효율적일까?
+- 하나의 cpu를 가지고 자주 switch하는 방식으로 사용자의 눈에는 마치 동시에 작동하는 것으로 보인다. (시분할, time sharing)
+cf. CPU 스케쥴링(CPU Scheduling) : 여러개의 프로세스가 동시에 준비되어 있을 때 시스템은 어떤 프로세스를 다음에 실행시켜야 효율적일까?
+
+### 멀티 프로그래밍(Multi Programming)
+- runs more than one programming at a time.
+- keep several process in memory simultaneously.
+- to increase CPU utilization.
 
 ---
 
@@ -207,6 +252,11 @@ fd[1] : the write end
 5. 시험 및 디버깅(testing and debuggin)
 
 ![3](https://user-images.githubusercontent.com/67992469/179942118-c8cd87c6-7ed3-43a9-9360-821387f881b4.png)
+
+### Two separate mode of operation
+1. `user mode` and `kernel mode`
+2. to ensure that an incorrect program cannot cause other programs to execute incorretly.
+![1](https://user-images.githubusercontent.com/67992469/185018725-a4274234-6097-49fe-ab2e-f9d26811231c.png)
 
 #### 유저 스레드와 커널 스레드
 유저 스레드는 사용자 수준의 스레드가 관리하는 스레드다. 스레드 라이브러리에는 대표적으로 POSIX Pthreads, window thread, java thread가 있다. 커널 스레드는 커널이 지원하는 스레드다. 사용자 스레드와 달리 안정성이 있으나 생성 속도 등 무겁다.
@@ -355,7 +405,7 @@ while (1)
 ```c
 acquire()
 {
-	while (!avaliable)
+	while (!available)
 	// busy wait
 	available = false;
 }
