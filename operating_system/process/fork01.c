@@ -11,13 +11,14 @@ int main()
 
 	if (pid == 0) 
 	{ 
-		// child process value += 15;
+		//child process 
+		value += 15;
 		return 0; 
 	}
     else if (pid > 0) 
 	{
 		// parent process	
-	  	wait(NULL);
+//	  	wait(NULL);
 		printf("Parent: value = %d\n", value); 
 	}
 }

@@ -94,6 +94,9 @@ l(x) = -log2P(x);
 #### fork()
 - 부모 프로세스는 자식 프로세스를 생성한다.
 - 부모 프로세스에겐 자식 프로세스 pid를, 자식프로세스는 0을 반환한다
+- the parent can `continues its execution`; or has nothing to do while the child runs(wait() system call).
+	- to move itself ready queue until child runs
+- context스위치가 막 바로 fork()하고 일어난다면 자식 프로세스가 먼저 실행될 수 있다. (단일 스레드에선 일어나지 않겠지만, 복잡할 때는 부모 프로세스가 먼저 일어날 수 있다)
 
 #### exec()
 - 자식 프로세스는 exec()관련 함수를 통해 부모 프로세스와 다른 프로그램을 실행 가능하다.
