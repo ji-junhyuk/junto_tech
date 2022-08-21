@@ -178,9 +178,10 @@ cf. CPU 스케쥴링(CPU Scheduling) : 여러개의 프로세스가 동시에 �
 ---
 
 ### IPC(Inter-Process Communication)
-- 프로세스는 독립적이거나 협력하며 동작한다. 
+- 프로세스는 독립적이거나 `협력`하며 동작한다. 
 - 커널 영역에서 IPC라는 내부 프로세스간 통신을 제공하게 되고, 프로세스는 커널이 제공하는 IPC설비를 이용해서 프로세스간 통신을 할 수 있게 된다.
 - 생산자-소비자 문제(producer-consumer problem)는 여러 개의 프로세스를 어떻게 동기화할 것인가에 관한 문제이다.
+	- a compiler produces assembly code, and a assembler consumes it. (webser produce HTML, broweser consume)
 ![6](https://user-images.githubusercontent.com/67992469/179715486-ab24b2a9-1bd5-4a86-b24f-6cd21b8abb39.png)
 
 #### 1. Shared memory
