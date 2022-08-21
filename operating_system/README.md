@@ -186,18 +186,71 @@ cf. CPU 스케쥴링(CPU Scheduling) : 여러개의 프로세스가 동시에 �
 
 #### 1. Shared memory
 - 프로세스끼리 특정 공통의 메모리 영역을 공유하며 상호간 통신하는 방법
+	- producer can fill the buffer, consumer can empty the buffer.
+- producer
+```c
+while (1)
+{
+	while (((in + 1) % BUFFER_SIZE) == out)
+		;
+	buffer[in] = next_produced;
+	in = (in + 1) % BUFFER_SIZE;
+}
+```
+
+- consumer
+```c
+while (1)
+{
+	while (in == out)
+		;
+	next_consumed = buffer[out];
+	out = (out + 1) % BUFFER_SIZE;
+}
+```
 
 #### 2. Message passing
 - 커널이 제공하는 API를 이용해서 커널 공간을 통해 통신한다. 메시지 큐(Mesage Queue)를 사용하여 송신 프로세스는 큐에 enqueue, 수신 프로세스는 큐에 dequeue 하며 상호간 통신한다. 메시지 큐는 커널 단에서 관리된다.
 	- 파이프(쉘)
 	- 소켓(TCP/IP)
 - mailbox(ports)를 통한 간접적인 메시지 송수신이 가능하다.
+- producer
+```c
+while (1)
+{
+	send(next_produced);
+}
+```
+- consumer
+```c
+while (1)
+{
+	receive(next_consumed);
+}
+```
+
+#### Communication Links (message passing)
+- direct or indirect communication
+- synchronous and asynchronous communacation
+- automatic or explicit buffering 
+
+#### direct communication
+- `explictily name` the `recipent` of `sender` of the communication
+- send(P, message), receive(Q, message) 
+- Links are established `automatically`.
+- A link is associated with `exactly two process`(exactly one link).
+
+#### indirect communication
+- messages are sent to and received from `mailboxes`, or `ports`.
+- Links are established between a pair of process
+	- only if `both members` of the pair have a `shared mailbox`.
+- A link may be associated with `more than two process`.
 
 #### 동기화(Synchronization)
-- 메시지 패킹 동기화 문제를 해결하기 위해 blocking과 non-blocking 방식을 사용한다.
+- 메시지 패킹 동기화 문제를 해결하기 위해 blocking(synchronus)과 non-blocking(asynchronous)방식을 사용한다.
 	- Blocking send : 수신자가 메시지를 받을 때까지 송신자는 block된다.
-	- Blocking receive : 메시지를 수신할 때까지 수신자는 block된다.
 	- Non-blocking send : 송신자가 메시지를 보내고 작업을 계속한다.
+	- Blocking receive : 메시지를 수신할 때까지 수신자는 block된다.
 	- Non-blocking receive: 수신자가 유효한 메시지나 Null 메시지를 받는다.
  
 --- 
