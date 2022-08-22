@@ -264,7 +264,13 @@ while (1)
 
 ---
 
-### 파이프(Pipes)
+### POSIX shared memory
+- is organized using memory-mapped files,
+	- first, create a shred-memory object
+```c
+fd = shm_open(rame, O_CREAT | ORDWR, 0666)
+```
+### 파이프(Pipes), message passing
 - 파이프는 부모 프로세스와 자식 프로세스가 통신할 때 사용하는 방식이다.
 - 파이프는 단방향 통신만 가능하기 때문에 양방향 통신을 하고 싶다면 두 개의 파이프가 필요하다.
 - 파이프에 이름을 붙인 named pipe를 사용하면 꼭 부모-자식 관계가 아니더라도 파이프를 이용해 통신할 수 있다.
