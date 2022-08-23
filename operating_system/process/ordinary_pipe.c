@@ -12,6 +12,8 @@ int main()
 	char read_msg[BUFFER_SIZE];
 	int fd[2];
 	pid_t pid;
+
+	/* create the pipe */
 	pipe(fd);
 	pid = fork(); // fork a new process
 	if (pid > 0) 

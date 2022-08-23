@@ -255,27 +255,41 @@ while (1)
  
 --- 
 
-### 소켓
-- 소켓은 서버와 클라이언트가 통신하는 방식이다.
-- `IP 주소`와 `포트 번호`가 있으면 클라이언트는 네트워크를 통해 서버 프로세스에 접근할 수 있다. 
-
-#### RPC(Remote Procedure Calls)는 
-- 프로세스와 프로세스가 네트워크로 이어져 있을 때 발생하는 호출을 말한다- stub, skeletion
-
----
-
 ### POSIX shared memory
-- is organized using memory-mapped files,
+- is organized using `memory-mapped files`,
 	- first, create a shred-memory object
 ```c
 fd = shm_open(rame, O_CREAT | ORDWR, 0666)
 ```
+	- configure the size of the object in bytes:
+```c
+ftruncate(fd, 4096);
+```
+	- finally, establish a memory-mapped files
+```c
+mmap(0, SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+```
+
 ### 파이프(Pipes), message passing
+- A pipe acts as a conduit allowing two processs to communicate.
+	- `unidirectional`(단방향) or `bidirectional`(양방향) communication?
+	- two-way comm., is it `half-duplex`(반이중) of `full-duplex`(전이중)?
+	- relationship exist between the communicating process? (such as parent-child) : 구현의 편의상 쓴다. 
+	- can the pipes communicate `over a network`? : socket을 쓴다.
+
+- Two common types of pipes
+	- 1. Ordinary pipes
+		- cannot be accessed form outside the process that created it.
+		- typically, a `parent process create a pip`e and `uses it to communicate with a child process` that it created.
+	- 2. Named pipes 
+		- `without a parent-child relationship`.
+![1](https://user-images.githubusercontent.com/67992469/186041463-574e462e-9884-4c3d-b879-c089b28016f7.png)
 - 파이프는 부모 프로세스와 자식 프로세스가 통신할 때 사용하는 방식이다.
 - 파이프는 단방향 통신만 가능하기 때문에 양방향 통신을 하고 싶다면 두 개의 파이프가 필요하다.
 - 파이프에 이름을 붙인 named pipe를 사용하면 꼭 부모-자식 관계가 아니더라도 파이프를 이용해 통신할 수 있다.
 
 ![7](https://user-images.githubusercontent.com/67992469/179715618-f597b54b-f77d-45b2-858c-711ef93316f0.png)
+#### Ordinay Pipes
 - Producer write, Consumer read
 ```c
 pipe(int fd[]);
@@ -288,6 +302,32 @@ fd[1] : the write end
 2. 양방향 통신의 경우 반이중 통신입니까 아니면 전이중 통신입니까?
 3. 통신 프로세스 간에 관계가 있어야 합니까? (부모 - 자식과 같은)
 4. 파이프가 네트워크를 통해 통신할 수 있습니까?
+
+#### Two other strategies in client-server system
+- Sockets
+	- are defined as endpoints for communication. 
+- RPCs(Remove Procedure Calls) : 원격에 있는 함수 호출
+	- one of the most common forms of `remote service`.
+	- 프로세스와 프로세스가 네트워크로 이어져 있을 때 발생하는 호출을 말한다. 
+	- abstracts procedure calls between processes on networked systems.
+	- a client invoke a procedure on a remote host, as it would invoke a procedure locally.
+- The RPC system
+	- hides the details that allow communication to take plcae by providing a `stub` on the client side.
+	- the stub of client-side locates the server and `marshals` the parameters.
+	- the stub of server-side received this message,
+		- unpack the marshalled parameters, and
+		- performs the procedure on the server.
+ 
+#### 소켓
+- 소켓은 서버와 클라이언트가 통신하는 방식이다.
+- `IP 주소`와 `포트 번호`가 있으면 클라이언트는 네트워크를 통해 서버 프로세스에 접근할 수 있다. 
+
+- Java provides
+	- easier interface to sockets and provides three different types of sockets
+		- `Socket` class: connection-oriented(TCP)
+		- DatagramSocket class: connectionless(UDP)
+		- MulticastSocket class: multiple recipients
+---
 
 ---
 
