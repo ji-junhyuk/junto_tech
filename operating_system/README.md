@@ -339,21 +339,40 @@ fd[1] : the write end
 ![1](https://user-images.githubusercontent.com/67992469/179941999-00d9a188-073d-4a73-8d6d-376636728f34.png)
 
 #### 멀티스레드 프로그래밍 장점
-1. 반응 : 입출력으로 처리로 작업이 진행되지 않더라도 다른 스레드가 작업을 계속하여 사용자의 작업 요구에 빠르게 응답할 수 있음
-2. 자원 공유 : 코드, 데이터, 힙 영역을 공유하기 때문에 shared memory, message passing 보다 효율적이다.
-3. 경제성 : 프로세스를 만드는 것에 비해 경제성이 좋다. 컨텍스트 스위치 비용도 마찬가지.
+1. 반응(responsiveness) : 입출력으로 처리로 작업이 진행되지 않더라도 다른 스레드가 작업을 계속하여 사용자의 작업 요구에 빠르게 응답할 수 있음
+2. 자원 공유(resource sharing) : thread는 코드, 데이터, 힙 영역을 공유하기 때문에 shared memory, message passing 보다 효율적이다.
+3. 경제성 : 프로세스를 만드는 것에 비해 경제성이 좋다. 컨텍스트 스위치 비용도 마찬가지(PCB와 thread).
 4. 확장성 : 멀티 프로세서 구조에서 이점을 챙길 수 있다.
 
 ![2](https://user-images.githubusercontent.com/67992469/179942070-eb2a5af6-b2aa-4d0a-8ec2-320760ea4105.png)
 - 사용자의 요청에 `새로운 프로세스를 만들어 응답하는 것`이 아닌 `스레드를 생성해 request를 응답`한다.
 
+#### Three techniques for explicitly creating threads in Java
+- `Inheritance` from the `Thread class` (다중 상속이 안되기에 문제)
+	- create a new class that is derived from the Thread class.
+	- and override its public void run() method.
+- `Implementing` the `Runnable interface`
+	- define a new class that implements the Runnable interface.
+	- and override its public void run() method.
+- `Using the Lambda expression`
+	- rather than defining a new class,
+	- use a lambda expression of Runnable instead.
+	
 #### 멀티코어 시스템에서 고려할 점
+- more efficient use of multiple cores for improve concurrency.
+- consider an application with four threads
+	- single-core: threads will be interleaved over time.
+	- multiple-cores: some threads can run in parallel.
+<사진28>
 1. 테스크 인식(identifying task) : 어떤 부분이 병렬적으로 실행되어야 하는지 찾는다.
 2. 균형(balance) : 전체 작업을 균듕하게 나눌 수 있는 지점을 찾는다.
-3. 데이터 분리(data splitting)
-4. 데이터 종속성(data dependency)
-5. 시험 및 디버깅(testing and debuggin)
+3. 데이터 분리(data splitting) : data also bust be `divided` to run on `separate cores`.
+4. 데이터 종속성(data dependency) : ensure that the execution of tasks is `synchronized` to accommodate the data dependency
+5. 시험 및 디버깅(testing and debuggin) : more difficult than single-thread.
 
+#### Types of parallelism
+- 1data devide, 2task devide
+- 지금은 분산시스템(distributed system)으로 처리한다.
 ![3](https://user-images.githubusercontent.com/67992469/179942118-c8cd87c6-7ed3-43a9-9360-821387f881b4.png)
 
 ### Two separate mode of operation
