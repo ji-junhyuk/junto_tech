@@ -363,7 +363,7 @@ fd[1] : the write end
 - consider an application with four threads
 	- single-core: threads will be interleaved over time.
 	- multiple-cores: some threads can run in parallel.
-<사진28>
+![1](https://user-images.githubusercontent.com/67992469/186289546-a12a4abd-ceed-44c2-a7c5-43685da00e9a.png)
 1. 테스크 인식(identifying task) : 어떤 부분이 병렬적으로 실행되어야 하는지 찾는다.
 2. 균형(balance) : 전체 작업을 균듕하게 나눌 수 있는 지점을 찾는다.
 3. 데이터 분리(data splitting) : data also bust be `divided` to run on `separate cores`.
