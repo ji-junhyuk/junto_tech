@@ -382,27 +382,42 @@ fd[1] : the write end
 
 #### 유저 스레드와 커널 스레드
 유저 스레드는 사용자 수준의 스레드가 관리하는 스레드다. 스레드 라이브러리에는 대표적으로 POSIX Pthreads, window thread, java thread가 있다. 커널 스레드는 커널이 지원하는 스레드다. 사용자 스레드와 달리 안정성이 있으나 생성 속도 등 무겁다.
+
 ![4](https://user-images.githubusercontent.com/67992469/179947809-a0454758-2f9a-49ff-9fa0-1b023d092ade.png)
 
-#### 일대일 관계
+#### Three relationship between user and kernel threads
+#### Many-to-One Model
+#### One-to-One Model
 - 하나의 스레드가 시스템 콜을 호출하더라도 다른 스레드가 실행될 수 있기 때문에 다대일 모델보다 `더 많은 동시성`을 제공한다.
 - 다중 처리기에서 다중 스레드가 `병렬로 수행`되는 것을 허용한다.
 - `오버헤드`로 인해 느리게 작동하는 경우 존재도 존재한다. `프로세스 당 스레드 수 제한` 하는 방식이다.
 - Windows, Linux 등 가장 많이 사용되는 모델 형식이다.
+#### Many-to-Many Model
+
+#### Thread library provides
+- an API for creating and managing threads
+	- POSIX Pthreads.
+	- Windows thread.
+	- Java thread.
 
 ---
 
 ### 암묵적 스레딩(Implicit Threading)
+- design of multithreading in multicore systems, is too difficult for application developer.
 - 스레드의 생성과 관리를 프로그래머가 아닌 `컴파일러와 런타임 라이브러리에서` 수행하는 것
 - 개발자가 `병렬 작업만 식별`하면 되고, `라이브러리`가 스레드 생성과 관리의 구체적인 세부 사항을 결정함
 - `explicit thread` : 프로그래머에 의해 생성되고 수행되는 스레드
 
-#### 4가지 방법
-1. thread pool
-2. fork and join
-3. OpenMP
-4. GCD(grand central dispatch)
+#### Four alternative approaches using implicit threading:
+1. thread pool - create number of threads in a pool where ther await work.
+2. fork and join - explicit threading, but an excellent candidate for `implicit threading`.
+3. OpenMP - a set of compiler directives and an API for proggrams written in C/C++.
+4. GCD(grand central dispatch) - developed by Apple for macos and ios operating system.
  
+#### OpenMP
+- identifies parellel regions as blocks of code that may run in parallel.
+- insert compiler directives into source code at parallel regions.
+- these directives instruct OpenMP runtime library to execute the region in parallel.
 ---
 
 ### CPU Scheduling 
