@@ -339,21 +339,40 @@ fd[1] : the write end
 ![1](https://user-images.githubusercontent.com/67992469/179941999-00d9a188-073d-4a73-8d6d-376636728f34.png)
 
 #### 멀티스레드 프로그래밍 장점
-1. 반응 : 입출력으로 처리로 작업이 진행되지 않더라도 다른 스레드가 작업을 계속하여 사용자의 작업 요구에 빠르게 응답할 수 있음
-2. 자원 공유 : 코드, 데이터, 힙 영역을 공유하기 때문에 shared memory, message passing 보다 효율적이다.
-3. 경제성 : 프로세스를 만드는 것에 비해 경제성이 좋다. 컨텍스트 스위치 비용도 마찬가지.
+1. 반응(responsiveness) : 입출력으로 처리로 작업이 진행되지 않더라도 다른 스레드가 작업을 계속하여 사용자의 작업 요구에 빠르게 응답할 수 있음
+2. 자원 공유(resource sharing) : thread는 코드, 데이터, 힙 영역을 공유하기 때문에 shared memory, message passing 보다 효율적이다.
+3. 경제성 : 프로세스를 만드는 것에 비해 경제성이 좋다. 컨텍스트 스위치 비용도 마찬가지(PCB와 thread).
 4. 확장성 : 멀티 프로세서 구조에서 이점을 챙길 수 있다.
 
 ![2](https://user-images.githubusercontent.com/67992469/179942070-eb2a5af6-b2aa-4d0a-8ec2-320760ea4105.png)
 - 사용자의 요청에 `새로운 프로세스를 만들어 응답하는 것`이 아닌 `스레드를 생성해 request를 응답`한다.
 
+#### Three techniques for explicitly creating threads in Java
+- `Inheritance` from the `Thread class` (다중 상속이 안되기에 문제)
+	- create a new class that is derived from the Thread class.
+	- and override its public void run() method.
+- `Implementing` the `Runnable interface`
+	- define a new class that implements the Runnable interface.
+	- and override its public void run() method.
+- `Using the Lambda expression`
+	- rather than defining a new class,
+	- use a lambda expression of Runnable instead.
+	
 #### 멀티코어 시스템에서 고려할 점
+- more efficient use of multiple cores for improve concurrency.
+- consider an application with four threads
+	- single-core: threads will be interleaved over time.
+	- multiple-cores: some threads can run in parallel.
+![1](https://user-images.githubusercontent.com/67992469/186289546-a12a4abd-ceed-44c2-a7c5-43685da00e9a.png)
 1. 테스크 인식(identifying task) : 어떤 부분이 병렬적으로 실행되어야 하는지 찾는다.
 2. 균형(balance) : 전체 작업을 균듕하게 나눌 수 있는 지점을 찾는다.
-3. 데이터 분리(data splitting)
-4. 데이터 종속성(data dependency)
-5. 시험 및 디버깅(testing and debuggin)
+3. 데이터 분리(data splitting) : data also bust be `divided` to run on `separate cores`.
+4. 데이터 종속성(data dependency) : ensure that the execution of tasks is `synchronized` to accommodate the data dependency
+5. 시험 및 디버깅(testing and debuggin) : more difficult than single-thread.
 
+#### Types of parallelism
+- 1data devide, 2task devide
+- 지금은 분산시스템(distributed system)으로 처리한다.
 ![3](https://user-images.githubusercontent.com/67992469/179942118-c8cd87c6-7ed3-43a9-9360-821387f881b4.png)
 
 ### Two separate mode of operation
@@ -363,27 +382,42 @@ fd[1] : the write end
 
 #### 유저 스레드와 커널 스레드
 유저 스레드는 사용자 수준의 스레드가 관리하는 스레드다. 스레드 라이브러리에는 대표적으로 POSIX Pthreads, window thread, java thread가 있다. 커널 스레드는 커널이 지원하는 스레드다. 사용자 스레드와 달리 안정성이 있으나 생성 속도 등 무겁다.
+
 ![4](https://user-images.githubusercontent.com/67992469/179947809-a0454758-2f9a-49ff-9fa0-1b023d092ade.png)
 
-#### 일대일 관계
+#### Three relationship between user and kernel threads
+#### Many-to-One Model
+#### One-to-One Model
 - 하나의 스레드가 시스템 콜을 호출하더라도 다른 스레드가 실행될 수 있기 때문에 다대일 모델보다 `더 많은 동시성`을 제공한다.
 - 다중 처리기에서 다중 스레드가 `병렬로 수행`되는 것을 허용한다.
 - `오버헤드`로 인해 느리게 작동하는 경우 존재도 존재한다. `프로세스 당 스레드 수 제한` 하는 방식이다.
 - Windows, Linux 등 가장 많이 사용되는 모델 형식이다.
+#### Many-to-Many Model
+
+#### Thread library provides
+- an API for creating and managing threads
+	- POSIX Pthreads.
+	- Windows thread.
+	- Java thread.
 
 ---
 
 ### 암묵적 스레딩(Implicit Threading)
+- design of multithreading in multicore systems, is too difficult for application developer.
 - 스레드의 생성과 관리를 프로그래머가 아닌 `컴파일러와 런타임 라이브러리에서` 수행하는 것
 - 개발자가 `병렬 작업만 식별`하면 되고, `라이브러리`가 스레드 생성과 관리의 구체적인 세부 사항을 결정함
 - `explicit thread` : 프로그래머에 의해 생성되고 수행되는 스레드
 
-#### 4가지 방법
-1. thread pool
-2. fork and join
-3. OpenMP
-4. GCD(grand central dispatch)
+#### Four alternative approaches using implicit threading:
+1. thread pool - create number of threads in a pool where ther await work.
+2. fork and join - explicit threading, but an excellent candidate for `implicit threading`.
+3. OpenMP - a set of compiler directives and an API for proggrams written in C/C++.
+4. GCD(grand central dispatch) - developed by Apple for macos and ios operating system.
  
+#### OpenMP
+- identifies parellel regions as blocks of code that may run in parallel.
+- insert compiler directives into source code at parallel regions.
+- these directives instruct OpenMP runtime library to execute the region in parallel.
 ---
 
 ### CPU Scheduling 
