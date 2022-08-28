@@ -418,27 +418,57 @@ fd[1] : the write end
 - identifies parellel regions as blocks of code that may run in parallel.
 - insert compiler directives into source code at parallel regions.
 - these directives instruct OpenMP runtime library to execute the region in parallel.
+ 
 ---
 
 ### CPU Scheduling 
-- 운영체제가 어떤 프로세스를 프로세서에 할당할 것인가 정하는 것을 말한다.
+- 운영체제가 어떤 프로세스를 프로세서에 할당할 것인가 정하는 것을 말한다.(ready to execute allocates the CPU to that process)
+- The objective of multiprogramming is
+	- to have some processes running at all times
+	- to maximize CPU utilization
+- Alternating sequence of CPU-burst and I/O-burst
+![1](https://user-images.githubusercontent.com/67992469/186787434-88bf9ca2-0241-480e-8119-b107f52ff6dd.png)
+- Histogram of CPU-burst duration (I/O bound time > CPU bound time)
+![2](https://user-images.githubusercontent.com/67992469/186787705-c422b057-3ee5-4ce9-8da9-eddc727de359.png)
 
-#### dispatch
-- 운영체제가 프로세스를 프로세서에 할당하는 것을 디스패치라고 한다.
-- ready에서 running으로 상태가 바뀌며, 레디큐에 있는 프로세스 중 어떤 프로세스를 디스패치 할 것인가를 정하는 것이 CPU Scheduling이라고 한다.
-![b](https://user-images.githubusercontent.com/67992469/179947201-ab50f071-a9de-4c0c-8bce-b39b3ac87a71.png)
-
+#### how can select a next process?
+- Linked List? or Binary Tree?
+- FIFO Queue:First-In, First-Out
+- Priority Queue: How can we determine the priority of a process?
+ 
 #### Preemptive vs Non-Preemptive
 - 선점 방식은 운영체제가 강제로 프로세스의 사용권을 통제하며, 비선점 방식은 프로세스가 스스로 다음 프로세스에게 자리를 넘겨주는 방식이다.
 1. running to waiting state
 2. running to ready state
 3. waiting to ready state
 4. process terminates  
-- 2, 3번을 Preemptive로 할 것인가 말것인가의 문제
+- 1, 4 : non-preemptive
+- 2, 3 : preemptive or non-preemptive(문제는 안생기겠지만, 효율은 낮아지겠다)
 
+#### dispatch
+- 운영체제가 프로세스를 프로세서에 할당하는 것을 디스패치라고 한다. (module of context switch)
+- The function of dispatcher
+	- switching context from one process to another.
+	- switching to user mode
+	- jumping to the proper location to resume the user program.
+- ready에서 running으로 상태가 바뀌며, 레디큐에 있는 프로세스 중 어떤 프로세스를 디스패치 할 것인가를 정하는 것이 CPU Scheduling이라고 한다.
+- The dispatcher shoud be as fast as possible.
+	- since it is invoked during every context switch.
+- The `dispatcher latency` is time to stop one process and start another process.
+![b](https://user-images.githubusercontent.com/67992469/179947201-ab50f071-a9de-4c0c-8bce-b39b3ac87a71.png)
+ 
+### Scheduling Criteria
+- CPU utilization : to keep the CPU as busy as possible.
+- Throughput : the number of processes completed per time unit.
+- `Turnaround time`:
+	- how long does it take to execute a process?
+	- from the time of submission to the time of completion.
+- `Wating time`:
+	- the amount of time that : a process spends waiting in the ready queue.
+	- the sum of periods spend waiting in the ready queue.
+- Response time : take to start responding
  
 ### 스케쥴링 알고리즘
-
 #### 평가 기준
 1. 수행시간(Burst time)
 2. CPU 사용량(CPU utilization)
@@ -450,9 +480,13 @@ fd[1] : the write end
 
 #### 1. FCFS(First-Come, First-Served)
 - 먼저 들어온 프로세스를 프로세서에 할당하는 방식이다. 
-- convoy effect(호송 효과) 
+- 일반적으로 최소값이 아니며 CPU-burst time에 따라 굉장히 다양한 값이 나온다.
+- The FCFS is `non-preemptive`.
+	- What if we have `one CPU-bound` and `many I/O bound` processes?
+		- convoy effect(호송 효과) 
+	- SJF: shortest-next-CPU-burst-first scheduling
  
-#### 2. SJF(Shortest Job First)
+#### 2. SJF(Shortest Job First) (SRTF, Shortest Remaining Time First)
 - 프로세스의 수행 시간이 짧은 순서에 따라 프로세서에 할당한다.
 - 과거의 cpu사용량을 보고 지수적 평균을 구한다.
 
@@ -462,6 +496,8 @@ fd[1] : the write end
 #### 4. RR(Round Robin)
 - 일정 시간 할달량(Time quantum)단위로 여러 프로세스를 번갈아가며 프로세서에 할당한다.
 - Preemptive
+
+#### Priority
  
 #### 5. MLQ(Multi-Level Queue)
 - 분리된 레디큐에 각각의 우선순위를 두어 프로세서에 할당하는 방식이다.
