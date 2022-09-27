@@ -8,6 +8,7 @@
 		- [3. 최대공약수](#3-최대공약수gcd-greatest-common-divisor)
 		- [4. 이진탐색](#4-이진탐색binary-search)
 		- [5. 하노이의 탑](#5-하노이의-탑hanois-tower)		
+	- [next_permutation 예제](#6-next_permutation)
 - [참고자료](#참고자료)
 ------
 
@@ -116,6 +117,70 @@ void hanoi(int a, int c, int number)
     }
 }
 ```
+
+### next_permutation
+```c
+	/*
+	 * example 1
+	 */
+	std::string s = "aba";
+	std::sort(s.begin(), s.end());
+	do {
+		std::cout << s << '\n';
+	} while (std::next_permutation(s.begin(), s.end()));
+
+	/*
+	 * example 2
+	 */
+	int arr[] = {1, 2, 3};
+	sort(arr, arr+3);
+	cout << "The 3! possible permutation with 3 elements:\n";
+	do
+	{
+		std::cout << arr[0] << ' ' << arr[1] << ' ' << arr[2] << '\n';
+	} while (next_permutation(arr, arr + 3));
+
+	/*
+	 * example 3
+	 */
+	int arr[] = {1, 2, 3};
+	sort(arr, arr+3);
+	reverse(arr, arr + 3);
+	cout << "The 3! possible permutation with 3 elements:\n";
+	do
+	{
+		std::cout << arr[0] << ' ' << arr[1] << ' ' << arr[2] << '\n';
+	} while (prev_permutation(arr, arr + 3));
+
+	/*
+	 * example 4 (Combination)
+	 * 1, 2, 3, 4 -> select 2
+	 */
+	int arr[4] = {0, 0, 1, 1};
+	do {
+		for (int idx = 0; idx < 4; ++idx) 
+		{
+			if (arr[idx] == 0)
+				cout << idx + 1;
+		}
+		cout << '\n';
+	} while (next_permutation(arr, arr + 4));
+
+	/*
+	 * example 5 (Combination)
+	 * 1, 2, 3, 4, 5 -> select 3
+	 */
+	int arr[5] = {0, 0, 0, 1, 1};
+	do {
+		for (int idx = 0; idx < 5; ++idx) 
+		{
+			if (arr[idx] == 0)
+				cout << idx + 1;
+		}
+		cout << '\n';
+	} while (next_permutation(arr, arr + 5));
+```
+
 ## 참고자료
 - 윤성우의 열혈 자료구조
 - [바킹독 알고리즘](https://blog.encrypted.gg/943)
