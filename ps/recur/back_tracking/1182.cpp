@@ -26,7 +26,8 @@ int main(void)
 	for (int idx = 0; idx < N; ++idx) 
 	{
 		comb[idx] = 0;
-		do {
+		do
+		{
 			sum = 0;
 			for (int jdx = 0; jdx < N; ++jdx) 
 			{
