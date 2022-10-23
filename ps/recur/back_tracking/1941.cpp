@@ -4,131 +4,145 @@
 #include <algorithm>
 #include <cstring>
 #include <tuple>
-#include <string>
+#include <unistd.h>
 using namespace std;
 typedef long long ll;
 
-int dy[] = {0, 0, 1, -1};
-int dx[] = {-1, 1, 0, 0};
-string temp[5];
-char people[25];
-char sequence[25];
+int board[25];
+int	q_board[5][5];
+int ans;
 bool visited[25];
-int cnt;
+bool q_visited[5][5];
+int	sequence[25];
 
-/*
- * 지금 로직의 문제점
- * 0 1 
- * 5 6
- * 10 11 13
- * 인 경우에도 connect_cnt가 7로 통과됌
- *
- * bfs가 해결책인가?
- */
 bool	dasom_is_four()
 {
-	int dasom_count;
+	int dasom_cnt;
 
-	dasom_count = 0;
+	dasom_cnt = 0;
 	for (int idx = 0; idx < 7; ++idx) 
 	{
-		if (sequence[idx] == 'Y')
-			++dasom_count;
+		if (sequence[idx] == 2)
+			++dasom_cnt;
+//		cout << sequence[idx] << ' ';
 	}
-	if (dasom_count >= 4)
-		return (1);
-	return (0);
+//	cout << '\n';
+//	cout << "dasom_cnt: " << dasom_cnt << '\n';
+	if (dasom_cnt >= 4)
+		return true;
+	return false;
 }
 
 bool	all_connected()
 {
-	int connect_cnt;
-	
-	connect_cnt = 0;
-	for (int idx = 0; idx < 25; ++idx) 
+	queue<pair<int, int>> Queue;
+
+	memset(q_board, 0, sizeof(q_board));
+	memset(q_visited, 0, sizeof(q_visited));
+	int flag = 0;
+	int first;
+	int second;
+	for (int idx = 0; idx < 5; ++idx) 
 	{
-		if (visited[idx] == 1)
+		for (int jdx = 0; jdx < 5; ++jdx) 
 		{
-			if (idx >= 20)
+			if (visited[idx * 5 + jdx])
 			{
-				if (idx % 5 != 4)
+				if (!flag)
 				{
-					if (visited[idx + 1] == 1)
-						++connect_cnt;
+					flag = 1;
+					first = idx;
+					second = jdx;
 				}
+				q_board[idx][jdx] = 1;
 			}
-			else // 아래도 확인 가능
-			{
-				if (idx % 5 == 4) 
-				{
-					if (visited[idx + 5] == 1)
-						++connect_cnt;
-				}
-				else
-				{
-					if (visited[idx + 5] == 1)
-						++connect_cnt;
-					if (visited[idx + 1] == 1)
-						++connect_cnt;
-				}
-			}
+			else
+				q_board[idx][jdx] = 0 ;
 		}
 	}
-	if (connect_cnt == 7)
-		return (1);
-	return (0);
+//	for (int idx = 0; idx < 5; ++idx) 
+//	{
+//		for (int jdx = 0; jdx < 5; ++jdx) 
+//		{
+//			cout << q_board[idx][jdx] << ' ';
+//		}
+//		cout << '\n';
+//	}
+	q_visited[first][second] = 1;
+	int dy[] = {-1, 1, 0, 0};
+	int dx[] = {0, 0, 1, -1};
+	Queue.push({first, second});
+	int connected_cnt = 0;
+	while (!Queue.empty())
+	{
+		++connected_cnt; 
+		auto cur = Queue.front();
+		Queue.pop();
+		for (int idx = 0; idx < 4; ++idx) 
+		{
+			int ny = dy[idx] + cur.first;
+			int nx = dx[idx] + cur.second;
+			if (ny < 0 || ny >= 5 || nx < 0 || nx >= 5)
+				continue ;
+			if (!q_board[ny][nx] || q_visited[ny][nx])
+				continue ;
+			q_visited[ny][nx] = 1;
+			Queue.push({ny, nx});
+		}
+	}
+//	cout << connected_cnt << '\n';
+	//sleep(1);
+	if (connected_cnt >= 7)
+		return true;
+	return false;
 }
+
 void	dfs(int depth, int index)
 {
 	if (depth == 7)
 	{
+		//cout << dasom_is_four() << '\n';
 		if (dasom_is_four() && all_connected())
 		{
-			for (int idx = 0; idx < 25; ++idx) 
-			{
-				if (visited[idx] == 1)
-					cout << idx << ' ';
-			}
-			cout << '\n';
-			++cnt;
-//			for (int idx = 0; idx < 7; ++idx) 
-//			{
-//				cout << sequence[idx] << ' ';
-//			}
-//			cout << '\n';
+			++ans;
 		}
+//		for (int idx = 0; idx < 7; ++idx) 
+//			cout << sequence[idx] << ' ';
+//		cout << '\n';
 		return ;
-		// 1. 이다솜파가 4명이상 있는지
-		// 2. 모두 붙어 있는지 
 	}
 	for (int idx = index; idx < 25; ++idx) 
 	{
 		if (!visited[idx])
 		{
-			sequence[depth] = people[idx];
 			visited[idx] = 1;
-			dfs(depth + 1, index);
+			sequence[depth] = board[idx];
+			dfs(depth + 1, idx);
 			visited[idx] = 0;
 		}
 	}
 }
-
 int main(void)
 {
 	ios::sync_with_stdio(false);
 	cin.tie(NULL);
 
-	for (int idx = 0; idx < 5; ++idx) 
-		cin >> temp[idx];
+	string str;
 	for (int idx = 0; idx < 5; ++idx) 
 	{
+		cin >> str;
 		for (int jdx = 0; jdx < 5; ++jdx) 
-			people[idx * 5 + jdx] = temp[idx][jdx];
+		{
+			if (str[jdx] == 'Y')
+				board[idx * 5 + jdx] = 1;
+			else
+				board[idx * 5 + jdx] = 2;
+		}
 	}
+//	for (int idx = 0; idx < 25; ++idx) 
+//	{
+//		cout << board[idx] << ' ';
+//	}
 	dfs(0, 0);
-	cout << cnt << '\n';
-	/*
-	 * 1. 25개중 7개를 뽑는다.
-	 *
-	 */
+	cout << ans;
 }
