@@ -58,12 +58,6 @@ int main(void)
 		cin >> egg_durability[idx];
 		cin >> egg_weight[idx];
 	}
-	for (int idx = 0; idx < N; ++idx) 
-	{
-		cout << egg_durability[idx] << ' ';
-		cout << egg_weight[idx] << ' ';
-		cout << '\n';
-	}
 	dfs(0);
 	cout << cnt;
 }
